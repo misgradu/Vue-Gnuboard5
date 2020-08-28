@@ -29,7 +29,7 @@ const store = new Vuex.Store({
       formData.append("login", true);
       formData.append("mb_id", id);
       formData.append("mb_password", pw);
-      fetch("../../api/", {
+      fetch(window.url, {
         method: "post",
         body: formData,
       })
@@ -48,7 +48,7 @@ const store = new Vuex.Store({
     async Logout (state) {
       let formData = new FormData();
       formData.append('logout', true);
-      fetch("../../api/", {
+      fetch(window.url, {
         method: "post",
         body: formData,
       })
