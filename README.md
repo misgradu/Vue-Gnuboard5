@@ -60,6 +60,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ### Demo
 ``` 
-http://allthatnba.com/vue 
+vuegnu.dothome.co.kr
 데모사이트는 일부기능을 이용할 수 없습니다.
 ```
