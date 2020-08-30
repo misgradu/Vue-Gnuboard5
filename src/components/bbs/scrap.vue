@@ -8,7 +8,7 @@
           </div>
         </template>
         <div v-for="row in list" :key="row.wr_id" class="pb-3">
-          <div class="flex justify-between"> <router-link :to="row.opener_href_wr_id"> {{row.subject}} </router-link> <i class="far fa-trash-alt"></i> </div>
+          <div class="flex justify-between"> <router-link :to="row.opener_href_wr_id"> {{row.subject}} </router-link> <button class="hover:text-teal-500" @click="scrap_del(row.ms_id)"> <i class="far fa-trash-alt"></i> </button> </div>
           <div class="text-gray-500">
             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded bg-purple-100 text-purple-800"> {{row.bo_subject}} </span>
             <span class="text-xs ml-3"> {{row.ms_datetime}} </span>
@@ -57,6 +57,16 @@
         page = page ? page : 1;
         this.$router.push({name: 'scrap', query : {page : page}});
       },
+      scrap_del(ms_id) {
+        let self = this;
+        window.req_api({
+          scrap_delete : true,
+          ms_id : ms_id,
+        }).then(function(json) {
+          alert(json.msg);
+          self.$router.go(0);
+        });
+      }
     }
   }
 </script>

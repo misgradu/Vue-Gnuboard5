@@ -16,13 +16,14 @@
       <input type="hidden" name="sst" :value="v.sst">
       <input type="hidden" name="sod" :value="v.sod">
       <input type="hidden" name="page" :value="v.page">
-      <li v-if="v.is_notice" class="inline-flex items-center mt-3 ml-3"><input type="checkbox" id="notice" name="notice"  class="selec_chk form-checkbox h-5 w-5 text-blue-600" :value="'1'+v.notice_checked"><label for="notice" class="ml-2 text-gray-700"><span></span>공지</label></li>
-      <input v-if="v.is_dhtml_editor" type="hidden" value="html1" name="html">
-      <li v-else class="inline-flex items-center mt-3 ml-3"><input type="checkbox" id="html" name="html" onclick="html_auto_br(this);" class="selec_chk form-checkbox h-5 w-5 text-blue-600" :value="v.$html_value + v.html_checked"><label class="ml-2 text-gray-700" for="html"><span></span>html</label></li>
-      <li v-if="v.is_admin || v.is_secret == 1" class="inline-flex items-center mt-3 ml-3"><input type="checkbox" id="secret" name="secret"  class="selec_chk form-checkbox h-5 w-5 text-blue-600" :value="'secret'+v.secret_checked"><label class="ml-2 text-gray-700" for="secret"><span></span>비밀글</label></li>
-      <input v-if="v.is_secret" type="hidden" name="secret" value="secret">
-      <li v-if="v.is_mail" class="inline-flex items-center mt-3 ml-3"><input type="checkbox" id="mail" name="mail"  class="selec_chk form-checkbox h-5 w-5 text-blue-600" :value="'mail'+v.recv_email_checked"><label class="ml-2 text-gray-700" for="mail"><span></span>답변메일받기</label></li>
-
+      <ul class="flex w-full">
+        <li v-if="v.is_notice" class="inline-flex items-center mt-3 ml-3"><input type="checkbox" id="notice" name="notice"  class="selec_chk form-checkbox h-5 w-5 text-blue-600" :value="'1'+v.notice_checked"><label for="notice" class="ml-2 text-gray-700"><span></span>공지</label></li>
+        <input v-if="v.is_dhtml_editor" type="hidden" value="html1" name="html">
+        <li v-else class="inline-flex items-center mt-3 ml-3"><input type="checkbox" id="html" name="html" onclick="html_auto_br(this);" class="selec_chk form-checkbox h-5 w-5 text-blue-600" :value="v.$html_value + v.html_checked"><label class="ml-2 text-gray-700" for="html"><span></span>html</label></li>
+        <li v-if="v.is_admin || v.is_secret == 1" class="inline-flex items-center mt-3 ml-3"><input type="checkbox" id="secret" name="secret"  class="selec_chk form-checkbox h-5 w-5 text-blue-600" :value="'secret'+v.secret_checked"><label class="ml-2 text-gray-700" for="secret"><span></span>비밀글</label></li>
+        <input v-else type="hidden" name="secret" value="secret">
+        <li v-if="v.is_mail" class="inline-flex items-center mt-3 ml-3"><input type="checkbox" id="mail" name="mail"  class="selec_chk form-checkbox h-5 w-5 text-blue-600" :value="'mail'+v.recv_email_checked"><label class="ml-2 text-gray-700" for="mail"><span></span>답변메일받기</label></li>
+      </ul>
       <div v-if="v.is_category" class="bo_w_select bo_w_info w-full px-3 mb-6 md:mb-0">
           <label for="ca_name" class="sound_only">분류<strong>필수</strong></label>
           <div class="relative">
@@ -127,13 +128,8 @@ export default {
     },
     fwrite_submit() {
       var f = this.$refs.fwrite;
-      let self = this;
       var formData = new FormData(f);
-      {{this.v.editor_js}}
-      if(this.v.captcha_js){
-        // eslint-disable-next-line no-undef
-        //if (!chk_captcha()) return false;
-      }
+      let self = this;
       window.req_api({
         write_token : true,
         bo_table : this.$route.params.bo_table,
@@ -146,13 +142,12 @@ export default {
         }
         var token = data.token;
         if(!token) {
-            alert("토큰 정보가 올바르지 않습니다.");
-            return false;
+          alert("토큰 정보가 올바르지 않습니다.");
+          return false;
         }
         formData.append('token', token);
         formData.append('write_update', true);
-        let url = "../../api/";
-        fetch(url, {
+        fetch(window.url, {
           method: "post",
           body: formData,
         })
@@ -162,11 +157,13 @@ export default {
         .then(function(data){
           if(data.msg) {
             alert(data.msg);
+            self.captcha();
           }else{
             self.$router.push(data.redirect_url);
           }
         });
       });
+      
     }
   },
   created () {
@@ -179,8 +176,13 @@ export default {
     postData.write = true;
     postData.bo_table = this.$route.params.bo_table;
     postData.parameter = JSON.stringify(this.$route.params);
+    postData.wr_password = this.$route.params.wr_password;
     console.log(postData);
     window.req_api(postData).then(function(json){
+      if(json.msg){
+        alert(json.msg);
+        self.$router.push('/');
+      }
       self.v = json;
       self.cf_captcha = json.config.cf_captcha;
       self.cf_captcha_text = json.captcha;

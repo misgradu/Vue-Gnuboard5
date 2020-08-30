@@ -11,7 +11,7 @@
           }">
           <template v-slot:header>
             <div class="flex justify-between items-center">
-              {{rows[0].bo_subject}}
+              <router-link class="hover:text-teal-500" :to="'/'+rows[0].bo_table"> {{rows[0].bo_subject}} </router-link>
               <router-link class="text-xs hover:text-teal-500" :to="'/'+rows[0].bo_table"> 더보기 </router-link>
             </div>
           </template>
@@ -41,7 +41,7 @@
           }">
           <template v-slot:header>
             <div class="flex justify-between items-center">
-              <div> {{rows.bo_subject}} </div>
+              <router-link class="hover:text-teal-500" :to="'/'+rows.bo_table"> {{rows.bo_subject}} </router-link>
               <router-link class="text-xs hover:text-teal-500" :to="'/'+rows.bo_table"> 더보기 </router-link>
             </div>
           </template>

@@ -74,29 +74,29 @@
         </div>
       </t-card>
       <t-card header="개인정보 입력" class="my-4">
-        <t-input-group label="이름"> <t-input name="mb_name" size="10" :value="c.member.mb_name" :readonly="c.readonly" type="text"/> </t-input-group>
-        <t-input-group v-if="r.req_nick" label="닉네임"> <t-input :value="c.member.mb_nick" id="reg_mb_nick" name="mb_nick" @change="reg_mb_nick_check" type="text"/> </t-input-group>
-        <t-input-group v-if="r.config.cf_use_email_certify" label="E-mail"> 
-          <input type="hidden" name="old_email" :value="c.member.mb_email">
-          <t-input :value="c.member.mb_email" name="mb_email" id="reg_mb_email" @change="reg_mb_email_check" size="70" maxlength="100" type="text"/> 
+        <t-input-group label="이름"> <t-input name="mb_name" size="10" :value="r.member.mb_name" :readonly="r.readonly" type="text"/> </t-input-group>
+        <t-input-group v-if="r.req_nick" label="닉네임"> <t-input :value="r.member.mb_nick" id="reg_mb_nick" name="mb_nick" @change="reg_mb_nick_check" type="text"/> </t-input-group>
+        <t-input-group label="E-mail"> 
+          <input type="hidden" name="old_email" :value="r.member.mb_email">
+          <t-input :value="r.member.mb_email" name="mb_email" id="reg_mb_email" size="70" maxlength="100" type="text"/> 
         </t-input-group>
+        <!--이메일 인증 넣을 곳 v-if="r.config.cf_use_email_certify" -->
         <t-input-group v-if="r.config.cf_use_homepage" label="홈페이지">
-          <t-input type="text" name="mb_homepage" :value="c.member.mb_homepage" size="70" maxlength="255" /> 
+          <t-input type="text" name="mb_homepage" :value="r.member.mb_homepage" size="70" maxlength="255" /> 
         </t-input-group>
-        <t-input-group v-if="r.config.cf_use_tel" label="전화번호"> <t-input :value="c.member.mb_tel" name="mb_tel" type="text"/> </t-input-group>
-        <t-input-group v-if="r.config.cf_use_hp" label="휴대폰번호"> <t-input :value="c.member.mb_hp" type="text"/> </t-input-group>
+        <t-input-group v-if="r.config.cf_use_tel" label="전화번호"> <t-input :value="r.member.mb_tel" name="mb_tel" type="text"/> </t-input-group>
+        <t-input-group v-if="r.config.cf_use_hp" label="휴대폰번호"> <t-input :value="r.member.mb_hp" type="text"/> </t-input-group>
         <div v-if="r.config.cf_use_addr">
-          <div v-append="r.POSTCODE"> </div>
-          <t-input-group label="주소"> <t-input :value="c.member.mb_id" type="text"/> </t-input-group>
-          <t-input-group> <t-input :value="c.member.mb_addr1" size="50" name="mb_addr1" placeholder="기본주소" type="text"/> </t-input-group>
-          <t-input-group> <t-input :value="c.member.mb_addr2" size="50" name="mb_addr2" placeholder="상세주소" type="text"/> </t-input-group>
-          <t-input-group> <t-input :value="c.member.mb_addr3" size="50" name="mb_addr3" placeholder="참고항목" type="text"/> </t-input-group>
-          <input type="hidden" name="mb_addr_jibeon" :value="c.member.mb_addr_jibeon">
+          <t-input-group label="주소"> <t-input :value="r.member.mb_id" type="text"/> </t-input-group>
+          <t-input-group> <t-input :value="r.member.mb_addr1" size="50" name="mb_addr1" placeholder="기본주소" type="text"/> </t-input-group>
+          <t-input-group> <t-input :value="r.member.mb_addr2" size="50" name="mb_addr2" placeholder="상세주소" type="text"/> </t-input-group>
+          <t-input-group> <t-input :value="r.member.mb_addr3" size="50" name="mb_addr3" placeholder="참고항목" type="text"/> </t-input-group>
+          <input type="hidden" name="mb_addr_jibeon" :value="r.member.mb_addr_jibeon">
         </div>
       </t-card>
       <t-card header="기타 개인설정" class="my-4">
-        <t-input-group v-if="r.config.cf_use_signature" label="서명"> <t-textarea name="mb_signature" placeholder="서명" type="text" class="w-full bg-gray-100 border h-20 rounded p-3"> {{c.member.mb_signature}} </t-textarea> </t-input-group>
-        <t-input-group v-if="r.config.cf_use_profile" label="자기소개"> <t-textarea name="mb_profile" placeholder="자기소개" type="text" class="w-full bg-gray-100 border h-20 rounded p-3"> {{c.member.mb_profile}} </t-textarea> </t-input-group>
+        <t-input-group v-if="r.config.cf_use_signature" label="서명"> <t-textarea name="mb_signature" placeholder="서명" type="text" class="w-full bg-gray-100 border h-20 rounded p-3"> {{r.member.mb_signature}} </t-textarea> </t-input-group>
+        <t-input-group v-if="r.config.cf_use_profile" label="자기소개"> <t-textarea name="mb_profile" placeholder="자기소개" type="text" class="w-full bg-gray-100 border h-20 rounded p-3"> {{r.member.mb_profile}} </t-textarea> </t-input-group>
         <t-input-group v-if="r.config.cf_use_member_icon" label="회원아이콘" :feedback="r.config.cf_member_icon_height + '. gif, jpg, png파일만 가능하며 용량 '+ r.config.cf_member_icon_size + '바이트 이하'">
           <t-input name="mb_icon" type="file"/>
         </t-input-group>
@@ -115,24 +115,41 @@
           <t-checkbox name="mb_open" value="a" />
           <span class="ml-2 text-sm">다른분들이 나의 정보를 볼 수 있도록 합니다.</span>
         </label>
-        <t-input-group v-if="r.w == '' && r.config.cf_use_recommend" class="w-48"> <t-input :value="c.member.mb_id" id="reg_mb_recommend" name="mb_recommend" @change="reg_mb_recommend_check" placeholder="추천인 아이디" type="text"/> </t-input-group>
-        <t-input-group v-if="r.config.cf_use_member_icon" label="캡차">
+        <t-input-group v-if="r.w == '' && r.config.cf_use_recommend" class="w-48"> <t-input :value="r.member.mb_id" id="reg_mb_recommend" name="mb_recommend" @change="reg_mb_recommend_check" placeholder="추천인 아이디" type="text"/> </t-input-group>
+        <t-input-group label="캡차" >
           <div ref="captcha" class="flex"> </div>
+          <button @click="captcha" type="button"> 캡차 갱신 </button>
         </t-input-group>
       </t-card>
-      <div v-append="r.captcha_html"> </div>
       <div class="w-full">
-        <t-button class="w-1/2 text-center" type="button"> 취소 </t-button>
+        <t-button class="w-1/2 text-center" type="button" @click="$router.push('/')"> 취소 </t-button>
         <t-button class="w-1/2 text-center" type="submit" variant="primary"> 회원가입 </t-button>
       </div>
     </form>
+  </div>
+  <div v-else class="m-5">
+    <t-card>
+      <template v-slot:header >
+        비밀번호를 입력하세요
+      </template>
+      <form name="fboardpassword" ref="fboardpassword" method="post" @submit.prevent="regsiter_modify">
+        <label for="pw_wr_password" class="sound_only">비밀번호<strong>필수</strong></label>
+        <t-input placeholder="비밀번호" id="pw_wr_password" type="password" name="wr_password"/>
+      </form>
+      <template v-slot:footer>
+        <div class="flex justify-between">
+          <t-button type="submit" @click="regsiter_modify"> 확인 </t-button>
+        </div>
+      </template>
+    </t-card>
   </div>
 </template>
 
 <script>
 import captcha from '../../mixin/captcha.js'
 export default {
-  mixins: [captcha],
+  mixins : [captcha],
+  props : ['isLogin'],
   name : 'register',
   data () {
     return {
@@ -145,14 +162,48 @@ export default {
   created () {
     let self = this;
     window.req_api({
-      register : true,
-    }).then(function(json){
-      self.c = json;
-      document.title = json.g5.title;
-      console.log('c', json);
+      isLogin : true,
+    }).then(function(json) {        
+      if(json.mb_id != '') {
+        self.$store.state.isLogin = true;
+        self.$store.state.member = json;
+      }else{
+        window.req_api({
+          register : true,
+        }).then(function(json){
+          self.c = json;
+          document.title = json.g5.title;
+          console.log('c', json);
+        });
+      }
     });
   },
   methods : {
+    regsiter_modify () {
+      let self = this;
+      console.log(self.$store.state.member.mb_id);
+      this.agree = true;
+      window.req_api({
+        register_form : true,
+        agree : "1",
+        agree2 : "1",
+        w : "u",
+        mb_id : self.$store.state.member.mb_id,
+        mb_password : document.getElementById('pw_wr_password').value,
+      }).then(function(json){
+        if(json.msg){
+          alert(json.msg);
+        }else{
+          self.agree = true;
+          self.r = json;
+          document.title = json.g5.title;
+          self.cf_captcha = json.config.cf_captcha;
+          self.cf_captcha_text = json.captcha;
+          self.profile_modify = true;
+          self.captcha();
+        }
+      });
+    },
     chkall() {
       if(this.$refs.chk_all.$el.checked) {
         this.$refs.agree.$el.checked = true;
@@ -177,6 +228,7 @@ export default {
           document.title = json.g5.title;
           self.cf_captcha = json.config.cf_captcha;
           self.cf_captcha_text = json.captcha;
+          
           self.captcha();
           console.log(json);
         });
@@ -206,7 +258,7 @@ export default {
     async reg_mb_nick_check () {
       let self = this;
       var f = this.$refs.fregisterform;
-      if ((f.w.value == "none") || (f.w.value == "u" && f.mb_nick.defaultValue != f.mb_nick.value)) {
+      if ((f.w.value == "none") || (f.w.value == "u" && f.mb_nick_default.value != f.mb_nick.value)) {
         window.req_api({
           register_form_valid : true,
           reg_mb_nick_check : true,
@@ -226,21 +278,23 @@ export default {
     async reg_mb_email_check () {
       let self = this;
       var f = this.$refs.fregisterform;
-      if ((f.w.value == "none") || (f.w.value == "u" && f.mb_email.defaultValue != f.mb_email.value)) {
-        window.req_api({
-          register_form_valid : true,
-          reg_mb_email_check : true,
-          "reg_mb_email": (document.querySelector("#reg_mb_email").value),
-          "reg_mb_id": encodeURIComponent(document.querySelector("#reg_mb_id").value)
-        }).then(function(json){
-          if(json.msg){
-            alert(json.msg);
-            f.reg_mb_email.select();
-            self.valid = false;
-          }else{
-            self.valid = true;
-          }
-        })
+      if(this.r.config.cf_use_email_certify){
+        if ((f.w.value == "none") || (f.w.value == "u" && f.old_email.value != f.mb_email.value)) {
+          window.req_api({
+            register_form_valid : true,
+            reg_mb_email_check : true,
+            "reg_mb_email": (document.querySelector("#reg_mb_email").value),
+            "reg_mb_id": encodeURIComponent(document.querySelector("#reg_mb_id").value)
+          }).then(function(json){
+            if(json.msg){
+              alert(json.msg);
+              f.reg_mb_email.select();
+              self.valid = false;
+            }else{
+              self.valid = true;
+            }
+          })
+        }
       }
     },
     async reg_mb_hp_check () {
@@ -348,6 +402,7 @@ export default {
       .then(function(data){
         if(data.msg) {
           alert(data.msg);
+          self.captcha();
         }else{
           console.log(self);
           //self.$route.push('/');

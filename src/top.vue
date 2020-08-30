@@ -61,30 +61,30 @@
                 <i class="fa fa-info w-5 h-5"></i>
               </button>
             </div>
-            <div>
+            <div slot-scope="{ hide, blurHandler }">
               <ul class="absolute right-0 w-32 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700" aria-label="submenu">
-                <li class="flex">
+                <li class="flex" @blur="blurHandler" @click="hide">
                   <router-link to='/bbs/faq' class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200">
                     <span>FAQ</span>
                   </router-link>
                 </li>
-                <li class="flex">
+                <li class="flex" @blur="blurHandler" @click="hide">
                   <a class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" href="#">
                     <span>Q&A</span>
                   </a>
                 </li>
-                <li class="flex">
-                  <a class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" href="#">
+                <li class="flex" @blur="blurHandler" @click="hide">
+                  <router-link to="/bbs/new" class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" >
                     <span>새글</span>
-                  </a>
+                  </router-link>
                 </li>
-                <li class="flex">
-                  <a class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" href="#">
+                <li class="flex" @blur="blurHandler" @click="hide">
+                  <router-link to="/bbs/current_connect" class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" >
                     <span>접속자</span>
                     <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600" v-if="$store.state.connect">
                       {{$store.state.connect.total_cnt}}
                     </span>
-                  </a>
+                  </router-link>
                 </li>
              </ul>
             </div>
@@ -128,37 +128,37 @@
                 @blur="blurHandler"
                 @keydown="keydownHandler"
               >
-                <img class="object-cover w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=200&amp;fit=max&amp;s=aa3a807e1bbdfd4364d1f449eaa96d82" alt="" aria-hidden="true">
+                <img class="object-cover w-8 h-8 rounded-full" :src="$store.state.member.mb_profile_img" alt="" aria-hidden="true">
                 <div class="px-2 dark:text-gray-400 font-bold"> {{$store.state.member.mb_id}} </div>
               </button>
             </div>
-            <div>
+            <div slot-scope="{ hide, blurHandler }">
               <ul class="absolute right-0 w-32 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700" aria-label="submenu">
-                <li class="flex">
-                  <a class="justify-between inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" href="#">
+                <li class="flex" @blur="blurHandler" @click="hide" >
+                  <router-link to='/bbs/point' class="justify-between inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" href="#">
                     <i class="w-4 h-4 mr-3 fa fa-database"> </i>
                     <span>{{$store.state.member.mb_point | number_format}}</span>
-                  </a>
+                  </router-link>
                 </li>
-                <li class="flex">
+                <li class="flex" @blur="blurHandler" @click="hide" >
                   <router-link class="justify-between inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" to="/bbs/memo">
                     <i class="w-4 h-4 mr-3 far fa-envelope"> </i>
                     <span>{{$store.state.member.mb_memo_cnt | number_format}}</span>
                   </router-link>
                 </li>
-                <li class="flex">
+                <li class="flex" @blur="blurHandler" @click="hide" >
                   <router-link class="justify-between inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" to="/bbs/scrap">
                     <i class="w-4 h-4 mr-3 fas fa-thumbtack"> </i>
                     <span>{{$store.state.member.mb_scrap_cnt | number_format}}</span>
                   </router-link>
                 </li>
-                <li class="flex">
-                  <a class="justify-between inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" href="#">
+                <li class="flex" @blur="blurHandler" @click="hide" >
+                  <router-link class="justify-between inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"  :to="{name : 'regsiter'}">
                     <i class="w-4 h-4 mr-3 fas fa-user-edit"> </i>
-                    <span>프로필</span>
-                  </a>
+                    <span >프로필</span>
+                  </router-link>
                 </li>
-                <li class="flex">
+                <li class="flex" @blur="blurHandler" @click="hide" >
                   <button class="justify-between inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" @click="floginSubmit">
                     <i class="w-4 h-4 mr-3 fas fa-sign-out-alt"> </i>
                     <span>로그아웃</span>
@@ -201,7 +201,8 @@
           await this.$parent.$refs.body.update();
         }else{
           await this.$store.commit('Logout');
-          await this.$parent.$refs.body.update();
+          await this.$router.go(0);
+          //await this.$parent.$refs.body.update();
         }
       },
       register () {
@@ -225,6 +226,7 @@
         if(json.mb_id != '') {
           self.$store.state.isLogin = true;
           self.$store.state.member = json;
+          console.log(self.$store.state.member);
         }
       });
     }

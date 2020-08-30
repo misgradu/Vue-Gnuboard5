@@ -153,6 +153,10 @@ import viewcomment from "./view.comment";
         bo_table : this.$route.params.bo_table,
         wr_seo_title : this.$route.params.seo,
       }).then(function(json){
+        if(json.msg){
+          alert(json.msg);
+          self.$router.push('/');
+        }
         if(json.redirect_url) {
           console.log(json.redirect_url);
           self.$router.push(json.redirect_url);
@@ -186,7 +190,8 @@ import viewcomment from "./view.comment";
           let self = this;
           let params = {};
           href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
-          if(href.indexOf('password.php') != -1) {
+          console.log(href, href.indexOf('password.php'));
+          if(href.indexOf('password.php') == -1) {
             self.$router.push({path : '/bbs/password', query : params});
           }else{
             window.req_api({
@@ -284,6 +289,10 @@ import viewcomment from "./view.comment";
         bo_table : to.params.bo_table,
         wr_seo_title :to.params.seo,
       }).then(function(json){
+        if(json.msg){
+          alert(json.msg);
+          self.$router.push('/');
+        }
         self.view = json.view;
         self.v = json;
         self.$store.state.connect = json.connect;

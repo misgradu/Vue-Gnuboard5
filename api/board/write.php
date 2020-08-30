@@ -80,7 +80,7 @@ if ($w == '') {
                 and wr_is_comment = 0 ";
     $row = sql_fetch($sql);
     if ($row['cnt'] && !$is_admin)
-        alert('이 글과 관련된 답변글이 존재하므로 수정 할 수 없습니다.\\n\\n답변글이 있는 원글은 수정할 수 없습니다.');
+        alert('이 글과 관련된 답변글이 존재하므로 수정 할 수 없습니다.\\n\\n답변글이 있는 원글은 수정할 수 없습니다.', G5_URL);
 
     // 코멘트 달린 원글의 수정 여부
     $sql = " select count(*) as cnt from {$write_table}
@@ -89,7 +89,7 @@ if ($w == '') {
                 and wr_is_comment = 1 ";
     $row = sql_fetch($sql);
     if ($board['bo_count_modify'] && $row['cnt'] >= $board['bo_count_modify'] && !$is_admin)
-        alert('이 글과 관련된 댓글이 존재하므로 수정 할 수 없습니다.\\n\\n댓글이 '.$board['bo_count_modify'].'건 이상 달린 원글은 수정할 수 없습니다.');
+        alert('이 글과 관련된 댓글이 존재하므로 수정 할 수 없습니다.\\n\\n댓글이 '.$board['bo_count_modify'].'건 이상 달린 원글은 수정할 수 없습니다.', G5_URL);
 
     $title_msg = '글수정';
 } else if ($w == 'r') {

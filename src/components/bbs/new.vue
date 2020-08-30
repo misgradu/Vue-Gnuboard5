@@ -23,7 +23,7 @@
       <div class="w-16 whitespace-no-wrap	table-cell"> {{row.datetime2}} </div>
       </div>
     </div>
-    <div class="p-5 shadow text-center my-4 border" v-if="list.length == 0"> 게시물이 없습니다 </div>
+    <div class="p-5 shadow text-center my-4 border bg-white" v-if="list.length == 0"> 게시물이 없습니다 </div>
     <t-pagination
       :total-items="n.total_count"
       :per-page="n.perPage"

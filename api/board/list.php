@@ -1,10 +1,10 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 // 분류 사용 여부
-$data['is_category'] = false;
+$is_category = false;
 $category_option = '';
 if ($board['bo_use_category']) {
-    $data['is_category'] = true;
+    $is_category = true;
     $category_href = str_replace(G5_URL, '',get_pretty_url($bo_table));
     $category = array();
     $category[0]['name'] = '전체';
@@ -125,9 +125,9 @@ if(!empty($notice_array)) {
 }
 
 // 관리자라면 CheckBox 보임
-$data['is_checkbox'] = false;
+$is_checkbox = false;
 if ($is_member && ($is_admin == 'super' || $group['gr_admin'] == $member['mb_id'] || $board['bo_admin'] == $member['mb_id']))
-    $data['is_checkbox'] = true;
+    $is_checkbox = true;
 
 // 정렬에 사용하는 QUERY_STRING
 $qstr2 = 'bo_table='.$bo_table.'&amp;sop='.$sop;
@@ -202,7 +202,7 @@ if($page_rows > 0) {
 
 g5_latest_cache_data($board['bo_table'], $list);
 
-$write_pages = get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, get_pretty_url($bo_table, '', $qstr.'&amp;page='));
+//$write_pages = get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, get_pretty_url($bo_table, '', $qstr.'&amp;page='));
 
 $list_href = '';
 $prev_part_href = '';
@@ -231,7 +231,7 @@ if ($is_search_bbs) {
 
 $write_href = '';
 if ($member['mb_level'] >= $board['bo_write_level']) {
-    $write_href = short_url_clean(G5_BBS_URL.'/write.php?bo_table='.$bo_table);
+    $write_href = str_replace(G5_URL, '', short_url_clean(G5_BBS_URL.'/write.php?bo_table='.$bo_table));
 }
 
 $nobr_begin = $nobr_end = "";
@@ -245,13 +245,13 @@ $rss_href = '';
 if ($board['bo_use_rss_view']) {
     $rss_href = G5_BBS_URL.'/rss.php?bo_table='.$bo_table;
 }
-$data['category'] = $category;
-$data['page'] = $page;
 $data['perpage'] = 1;
 $data['limit'] = 5;
-$data['total_page'] = $total_page;
-$data['list'] = $list;
-$data['total_count'] = (int)$total_count;
-$data['write_href'] =  str_replace(G5_URL, '', $write_href);
+$total_count = (int)$total_count;
+$arr = get_defined_vars();
+foreach ( $arr as $key => $value ) {
+  $data[$key] = $value;
+}
+//$data['write_href'] =  str_replace(G5_URL, '', $write_href);
 $stx = get_text(stripslashes($stx));
 ?>

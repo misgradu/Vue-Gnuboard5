@@ -13,7 +13,7 @@
       </div>
       <div v-html="list.fm.fm_tail_html"></div>
     </div>
-    <div class="text-right p-5 text-red-500"><a :href="list.admin_href" class="btn_admin btn" title="FAQ 수정"><i class="fa fa-cog fa-spin fa-fw"></i><span class="sound_only">FAQ 수정</span></a></div>
+    <div class="text-right p-5 text-red-500"><a :href="list.member.mb_level >= 10" class="btn_admin btn" title="FAQ 수정"><i class="fa fa-cog fa-spin fa-fw"></i><span class="sound_only">FAQ 수정</span></a></div>
   </div>
 </template>
 
@@ -26,6 +26,9 @@
           fm : {
             fm_head_html : null,
             fm_tail_html : null,
+          },
+          member : {
+            mb_level : 1
           }
         },
       }

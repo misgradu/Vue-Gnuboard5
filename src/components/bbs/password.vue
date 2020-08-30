@@ -13,7 +13,7 @@
         <input type="hidden" name="stx" :value="$parent.$route.query.stx">
         <input type="hidden" name="page" :value="$parent.$route.query.page">
         <label for="pw_wr_password" class="sound_only">비밀번호<strong>필수</strong></label>
-        <t-input placeholder="비밀번호" id="pw_wr_password" name="wr_password"/>
+        <t-input placeholder="비밀번호" id="pw_wr_password" type="password" name="wr_password"/>
       </form>
       <template v-slot:footer>
         <div class="flex justify-between">
@@ -61,9 +61,13 @@
           }).then(function(json){
             if(json.msg){
               alert(json.msg);
+              if(json.url){
+                self.$router.push('/');
+              }
+            }else{
+              delete self.$route.query.password;
+              self.$router.push({name : 'write' , params : {bo_table : self.$route.query.bo_table, wr_password : f.wr_password.value} , query : self.$route.query});
             }
-            console.log(self.$route.query);
-            self.$router.push('/write/?'+params);
           });
         }else if(f.w.value=='d') { //글 삭제
           let self = this;
@@ -77,6 +81,12 @@
           }).then(function(json){
             if(json.msg){
               alert(json.msg);
+              var query = self.$parent.$route.query;
+              query.password = true;
+              window.req_api(query).then(function(json) {        
+                self.p = json;
+                if(self.p.g5.title) document.title = self.p.g5.title;
+              });
             }
             self.$router.push(json.redirect_url);
           });
@@ -105,6 +115,12 @@
             return response.json();
           }).then(function(json){
             if(json.msg){
+              var query = self.$parent.$route.query;
+              query.password = true;
+              window.req_api(query).then(function(json) {        
+                self.p = json;
+                if(self.p.g5.title) document.title = self.p.g5.title;
+              });
               alert(json.msg)
             }else{
               if(json.redirect_url){
@@ -115,19 +131,23 @@
         }else {
           var formData = new FormData(f);
           formData.append('password_check', true);
-          fetch(window.url, {
-            method: "post",
-            body: formData,
-          }).then(function(response) {
-            return response.json();
-          }).then(function(json){
-            if(json.msg){
-              alert(json.msg);
-            }else{
-              var href = json.redirect_url.replace(/amp;/gi, '');
-              self.$router.push(href);
-            }
-          });
+          if(document.getElementById('pw_wr_password').value.length == 0) {
+            alert('비밀번호를 입력하세요');
+          }else {
+            fetch(window.url, {
+              method: "post",
+              body: formData,
+            }).then(function(response) {
+              return response.json();
+            }).then(function(json){
+              if(json.msg){
+                alert(json.msg);
+              }else{
+                var href = json.redirect_url.replace(/amp;/gi, '');
+                self.$router.push(href);
+              }
+            });
+          }
         }
       }
     }

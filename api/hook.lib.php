@@ -1,7 +1,23 @@
 <?php
 function login_check($mb, $link, $is_social_login) {
   global $g5, $config;
-  unset($mb['mb_password']);
+  $src = '';
+  $mb_id = $mb['mb_id'];
+  if( $mb_id ){
+    $member_img = G5_DATA_PATH.'/member_image/'.substr($mb_id,0,2).'/'.get_mb_icon_name($mb_id).'.gif';
+    if (is_file($member_img)) {
+      $src = str_replace(G5_DATA_PATH, G5_DATA_URL, $member_img);
+    }
+  }
+  if( !$src ){
+    // 프로필 이미지가 없을때 기본 이미지
+    $no_profile_img = (defined('G5_THEME_NO_PROFILE_IMG') && G5_THEME_NO_PROFILE_IMG) ? G5_THEME_NO_PROFILE_IMG : G5_NO_PROFILE_IMG;
+    $tmp = array();
+    preg_match( '/src="([^"]*)"/i', $no_profile_img, $tmp );
+    $src = isset($tmp[1]) ? $tmp[1] : G5_IMG_URL.'/no_profile.gif';    
+  }
+  $mb['mb_profile_img'] = $src;
+  $mb = unset_data($mb);
   echo json_encode($mb, JSON_UNESCAPED_UNICODE);
   exit;
 }
@@ -18,7 +34,7 @@ function vue_alert($msg='', $url='', $error=true, $post=false) {
   global $is_admin;
   $msg = strip_tags($msg, '<br>');
   $msg = str_replace("<br>", "\\n", $msg);
-  echo '{"msg" : "'.$msg.'"}';
+  echo '{"msg" : "'.$msg.'", "url" : "'.$url.'"}';
   exit;
 }
 function vue_alert_close($msg, $error=true) {
@@ -121,5 +137,10 @@ function VueCaptcha(){
     set_session("ss_captcha_key", $keystring);
     return $keystring;
   }
+}
+function Vue_move_update ($bo_table, $chk_bo_table, $wr_id_list, $opener_href) {
+  global $msg;
+  echo '{"redirect_url" : "'.str_replace(G5_URL, '', $opener_href).'", "msg" : "'.$msg.'"}';
+  exit;
 }
 ?>

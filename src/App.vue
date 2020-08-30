@@ -3,7 +3,7 @@
     <gnu-header> </gnu-header>
     <div class="flex flex-col flex-1" style="min-height:100vh">
       <gnu-top> </gnu-top>
-      <router-view ref="body"></router-view>
+      <router-view ref="body" :key="$route.fullPath"></router-view>
     </div>
     <button style="display:none" id="themeChange" aria-label="Toggle color mode" @click="dark = !dark"> </button>
     <!--<gnu-footer> </gnu-footer>-->

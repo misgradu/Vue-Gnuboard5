@@ -30,6 +30,7 @@ class Vue {
     $this->view_comment = isset($_POST['view_comment']) ? $_POST['view_comment'] : null;
     $this->board_list_update = isset($_POST['board_list_update']) ? $_POST['board_list_update'] : null;
     $this->move = isset($_POST['move']) ? $_POST['move'] : null;
+    $this->move_update = isset($_POST['move_update']) ? $_POST['move_update'] : null;
     $this->copy = isset($_POST['copy']) ? $_POST['move'] : null;
     $this->faq = isset($_POST['faq']) ? $_POST['faq'] : null;
     $this->delete = isset($_POST['delete']) ? $_POST['delete'] : null;
@@ -39,9 +40,13 @@ class Vue {
     $this->new = isset($_POST['new']) ? $_POST['new'] : null;
     $this->memo = isset($_POST['memo']) ? $_POST['memo'] : null;
     $this->scrap = isset($_POST['scrap']) ? $_POST['scrap'] : null;
+    $this->scrap_delete = isset($_POST['scrap_delete']) ? $_POST['scrap_delete'] : null;
     $this->password = isset($_POST['password']) ? $_POST['password'] : null;
     $this->password_check = isset($_POST['password_check']) ? $_POST['password_check'] : null;
     $this->f_scrap_popin_update = isset($_POST['f_scrap_popin_update']) ? $_POST['f_scrap_popin_update'] : null;
+    $this->current_connect = isset($_POST['current_connect']) ? $_POST['current_connect'] : null;
+    $this->captcha = isset($_POST['captcha']) ? $_POST['captcha'] : null;
+    $this->point = isset($_POST['point']) ? $_POST['point'] : null;
   }
   public function result() {
     global $g5, $board, $board_skin_path, $wr_seo_title, $bo_table, $config, $member;
@@ -77,14 +82,29 @@ class Vue {
       add_event('write_update_after', 'write_update',10,5); 
       include_once(G5_BBS_PATH.'/write_update.php');
     }else if ($this->isLogin) {
+      $src = '';
+      if( $member['mb_id'] ){
+        $member_img = G5_DATA_PATH.'/member_image/'.substr($member['mb_id'],0,2).'/'.get_mb_icon_name($member['mb_id']).'.gif';
+        if (is_file($member_img)) {
+          $src = str_replace(G5_DATA_PATH, G5_DATA_URL, $member_img);
+        }
+      }
+      if( !$src ){
+        // 프로필 이미지가 없을때 기본 이미지
+        $no_profile_img = (defined('G5_THEME_NO_PROFILE_IMG') && G5_THEME_NO_PROFILE_IMG) ? G5_THEME_NO_PROFILE_IMG : G5_NO_PROFILE_IMG;
+        $tmp = array();
+        preg_match( '/src="([^"]*)"/i', $no_profile_img, $tmp );
+        $src = isset($tmp[1]) ? $tmp[1] : G5_IMG_URL.'/no_profile.gif';    
+      }
+      $member['mb_profile_img'] = $src;
       return json_encode($member, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK );
     }else if($this->login) {
       add_event('member_login_check', 'login_check',10,3); 
       add_event('password_is_wrong', 'password_wrong',10,2); 
-      include_once "../bbs/login_check.php";
+      include_once G5_BBS_PATH."/login_check.php";
     }else if($this->logout){
       add_event('member_logout', 'logout',10,1); 
-      include_once "../bbs/logout.php";
+      include_once G5_BBS_PATH."/logout.php";
     }else if($this->latest) {
       $bo_table = isset($_POST['bo_table']) ? $_POST['bo_table'] : null;
       $rows = isset($_POST['rows']) ? $_POST['rows'] : null;
@@ -215,15 +235,20 @@ class Vue {
       }
       if($_POST['btn_submit'] == '선택삭제') {
         include G5_BBS_PATH.'/delete_all.php';
-      } else if($_POST['btn_submit'] == '선택복사') {
-        $sw = 'copy';
-        include G5_BBS_PATH.'/move.php';
+      } else if($_POST['btn_submit'] == '선택복사') {  
+        include './board/move.php';
+        return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK );
       } else if($_POST['btn_submit'] == '선택이동') {
-        $sw = 'move';
-        include G5_BBS_PATH.'/move.php';
+        include './board/move.php';
+        return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK );
       } else {
         alert('올바른 방법으로 이용해 주세요.');
       }
+    }else if ($this->move_update) {
+      include_once('./board/board_common.php');
+      @extract($_POST);
+      add_event('bbs_move_update', 'Vue_move_update', 10 , 4); 
+      include_once(G5_BBS_PATH.'/move_update.php');
     }else if ($this->faq) {
       include_once('./board/board_common.php');
       @extract($_POST);
@@ -284,6 +309,17 @@ class Vue {
       include_once('./board/board_common.php');      
       include_once('./board/scrap.php');      
       return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK );
+    }else if($this->scrap_delete) {
+      include_once('./board/board_common.php');      
+      @extract($_POST);
+      @extract($_GET);
+      if (!$is_member)
+      alert('회원만 이용하실 수 있습니다.');
+      $sql = " delete from {$g5['scrap_table']} where mb_id = '{$member['mb_id']}' and ms_id = '$ms_id' ";
+      sql_query($sql);
+      $sql = " update `{$g5['member_table']}` set mb_scrap_cnt = '".get_scrap_totals($member['mb_id'])."' where mb_id = '{$member['mb_id']}' ";
+      sql_query($sql);
+      alert('삭제하였습니다');
     }else if ($this->password) {
       @extract($_POST);
       @extract($_GET);
@@ -299,6 +335,22 @@ class Vue {
       @extract($_GET);
       include_once('./board/board_common.php');
       include_once('./board/scrap_popin_update.php');
+    }else if ($this->current_connect) {
+      include_once('./board/current_connect.php');
+      return json_encode($list, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK ); 
+    }else if ($this->captcha) {
+      $data = array();
+      $data['capthca'] = VueCaptcha();
+      return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK ); 
+    }else if ($this->point) {
+      $page = isset($_REQUEST['page']) ? (int)$_REQUEST['page'] : null;
+      include_once('./board/point.php');
+      $arr = get_defined_vars();
+      foreach ( $arr as $key => $value ) {
+        $data[$key] = $value;
+      }
+      $data = unset_data($data);
+      return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK );    
     }
   }
   //내부 함수
@@ -315,6 +367,7 @@ class Vue {
     for ($i=0; $row = sql_fetch_array($result); $i++) {
       try {
         unset($row['wr_password']);     //패스워드 저장 안함( 아예 삭제 )
+        unset($row['wr_ip']);
       } catch (Exception $e) {
       }
       $row['wr_email'] = '';              //이메일 저장 안함
@@ -326,6 +379,7 @@ class Vue {
       $list[$i]['first_file_thumb'] = (isset($row['wr_file']) && $row['wr_file']) ? get_board_file_db($bo_table, $row['wr_id'], 'bf_file, bf_content', "and bf_type between '1' and '3'", true) : array('bf_file'=>'', 'bf_content'=>'');
       $list[$i]['href'] = str_replace(G5_URL, '', short_url_clean($list[$i]['href']));
       $list[$i]['bo_table'] = $bo_table;
+      $list[$i]['bo_subject'] = $bo_subject;
       // 썸네일 추가
       if($options && is_string($options)) {
           $options_arr = explode(',', $options);
@@ -339,6 +393,10 @@ class Vue {
           }
       }
     }
-    return $list;
+    if($list) {
+      return $list;
+    }else {
+      return $board;
+    }
   }
 }

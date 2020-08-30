@@ -1,6 +1,4 @@
 <?php
-include_once('./_common.php');
-
 if ($sw == 'move')
     $act = '이동';
 else if ($sw == 'copy')

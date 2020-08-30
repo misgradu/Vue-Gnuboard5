@@ -13,6 +13,43 @@
         </h2>
       </div>
     </header>
+    <t-modal name="sw_modal">
+      <template v-slot:header>
+        <div> {{ao.sw == 'copy' ? '게시물 복사' : '게시물 이동'}} </div>
+      </template>
+      <form name="fboardmoveall" ref="fboardmoveall" method="post" @submit.prevent="move_update">
+        <input type="hidden" name="sw" :value="ao.sw">
+        <input type="hidden" name="bo_table" :value="ao.bo_table">
+        <input type="hidden" name="wr_id_list" :value="ao.wr_id_list">
+        <input type="hidden" name="sfl" :value="ao.sfl">
+        <input type="hidden" name="stx" :value="ao.stx">
+        <input type="hidden" name="spt" :value="ao.spt">
+        <input type="hidden" name="sst" :value="ao.sst">
+        <input type="hidden" name="sod" :value="ao.sod">
+        <input type="hidden" name="page" :value="ao.page">
+        <input type="hidden" name="act" :value="ao.act">
+        <input type="hidden" name="url" :value="ao.HTTP_REFERER">
+        <div class="border-b text-center text-xl font-bold py-2">  게시판 </div>
+        <div class="flex py-3 border-b justify-between px-3 items-center" v-for="(row, i) in ao.list" :key="i" v-bind:class="{'bg-gray-100' : row.bo_table == $route.params.bo_table}"> <!-- $route.params.bo_table -->
+          <div class="items-center flex">
+            <div class="inline-flex items-center justify-center mr-4">
+              <input type="checkbox" name="chk_bo_table[]" :value="row.bo_table" class="form-checkbox h-5 w-5 text-blue-600">
+                <b class="sound_only">현재 페이지 게시물  전체선택</b>
+            </div>
+            {{row.gr_subject}} > {{row.bo_subject}} ({{row.bo_table}}) 
+          </div>
+          <div>
+            {{row.bo_table == $route.params.bo_table ? '현재' : ''}}
+          </div>
+        </div>
+      </form>
+      <template v-slot:footer>
+        <div class="flex justify-around">
+          <t-button variant="primary" type="submit" class="w-1/4" @click="move_update"> 복사 </t-button>
+          <t-button  class="w-1/4" type="button" @click="$modal.hide('sw_modal')"> 창 닫기 </t-button>
+        </div>
+      </template>
+    </t-modal>
     <form name="fboardlist" id="fboardlist" ref="fboardlist" @submit.prevent="onSubmit" method="post">
     <input type="hidden" name="bo_table" :value="$route.params.bo_table">
     <input type="hidden" name="sfl" :value="list.sfl">
@@ -137,26 +174,18 @@ export default {
       stx : '',
       sfl : '',
       sca : '',
+      ao : {
+        list : null,
+      }, //admin_order
     }
   },
   methods : {
-    onSubmit () {
-      return false;
-    },
-    select_copy(order) { 
-      const f = this.$refs.fboardlist;
+    move_update () {
+      let self = this;
+      const f = this.$refs.fboardmoveall;
       var formData = new FormData(f);
-      if(order == '선택복사') {
-        formData.append('copy', true);
-        formData.append('sw', 'copy');
-      }
-      else {
-        formData.append('move', true);
-        formData.append('sw', 'move');
-      }
-      
-      let url = "../../api/";
-      fetch(url, {
+      formData.append('move_update', true);
+      fetch(window.url, {
         method: "post",
         body: formData,
       })
@@ -164,7 +193,43 @@ export default {
         return response.json();
       })
       .then(function(data){
+        if(data.msg) {
+          alert(data.msg);
+        }
+        self.$modal.hide('sw_modal');
+        self.update();
+      });
+    },
+    onSubmit () {
+      return false;
+    },
+    select_copy(order) { 
+      let self = this;
+      const f = this.$refs.fboardlist;
+      var formData = new FormData(f);
+      formData.append('board_list_update', true);
+      if(order == 'copy') {
+        formData.append('btn_submit', '선택복사');
+        formData.append('sw', 'copy');
+      }
+      else if(order=='move') {
+        formData.append('btn_submit', '선택이동');
+        formData.append('sw', 'move');
+      }
+      fetch(window.url, {
+        method: "post",
+        body: formData,
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data){
+        if(data.msg) {
+          alert(data.msg);
+        }
         console.log(data);
+        self.ao = data;
+        self.$modal.show('sw_modal');
       });
     },
     fboardlist (value) {
@@ -172,8 +237,6 @@ export default {
       //console.log(e.target);
       let self = this;
       const f = this.$refs.fboardlist;
-      console.log(f);
-      console.log(value);
       var formData = new FormData(f);
       formData.append('board_list_update', true);
       let chk_count = 0;
@@ -196,23 +259,23 @@ export default {
       if(value == "선택삭제") {
         if(confirm('선택한 게시물을 정말 삭제하시겠습니까?\r\n한번 삭제한 자료는 복구할 수 없습니다\r\n답변글이 있는 게시글을 선택하신 경우\r\n답변글도 선택하셔야 게시글이 삭제됩니다.')){
           formData.append('btn_submit', value);
+          fetch(window.url, {
+            method: "post",
+            body: formData,
+          })
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data){
+            if(data.msg) {
+              alert(data.msg);
+            }else{
+              console.log(self);
+              self.update();
+            }
+          });
         }
-      }
-      fetch(window.url, {
-        method: "post",
-        body: formData,
-      })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(data){
-        if(data.msg) {
-          alert(data.msg);
-        }else{
-          console.log(self);
-          self.update();
-        }
-      });
+      }    
     },
     search () {
       this.colspan = 5;
@@ -335,6 +398,10 @@ export default {
       list : true,
       bo_table : this.$route.params.bo_table,
     }).then(function(json){
+      if(json.msg){
+        alert(json.msg);
+        self.$router.push('/');
+      }
       self.list = json;
       if(self.list.is_checkbox == true) self.colspan++;
       if(self.list.is_good == true) self.colspan++;
@@ -357,6 +424,10 @@ export default {
       list : true,
       bo_table : to.params.bo_table,
     }).then(function(json){
+      if(json.msg){
+        alert(json.msg);
+        self.$router.push('/');
+      }
       self.list = json;
       if(self.list.is_checkbox == true) self.colspan++;
       if(self.list.is_good == true) self.colspan++;

@@ -224,10 +224,9 @@ const theme = {
   },
   TModal: {
     fixedClasses: {
-      overlay:
-        "z-40 overflow-auto left-0 top-0 bottom-0 right-0 w-full h-full fixed bg-opacity-50",
+      overlay: "z-40 overflow-auto left-0 top-0 bottom-0 right-0 w-full h-full fixed bg-opacity-50",
       wrapper: "z-50 relative mx-auto my-0 max-w-lg mt-12",
-      modal: "bg-white shadow overflow-hidden relative",
+      modal: "bg-white shadow overflow-hidden relative rounded",
       body: "p-4",
       header: "p-4  text-sm font-semibold uppercase text-gray-700",
       footer: "p-4 text-sm font-semibold uppercase text-gray-700",

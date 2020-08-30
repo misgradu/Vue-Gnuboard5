@@ -24,6 +24,9 @@
         @change="page"
       />
     </div>
+    <t-alert variant="danger" show v-if="list.length == 0" :dismissible="false">
+      저장된 메모가 없습니다.
+    </t-alert>
   </div>
 </template>
 
