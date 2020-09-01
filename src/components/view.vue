@@ -27,7 +27,7 @@
           </div>
         </section>
         <ul class="flex py-3 border-b justify-end whitespace-no-wrap">
-          <li class="px-2 py-1 bg-gray-200 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.list_href" title="목록"> <i class="fa fa-list" aria-hidden="true"></i> <span class="hidden md:inline-block">목록</span></router-link></li>
+          <li class="px-2 py-1 bg-gray-200 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="'/'+$route.params.bo_table" title="목록"> <i class="fa fa-list" aria-hidden="true"></i> <span class="hidden md:inline-block">목록</span></router-link></li>
             <li class="px-2 py-1 bg-gray-200 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.reply_href" title="답변"><i class="fas fa-reply"></i><span class="hidden md:inline-block">답변</span></router-link></li>
             <li class="px-2 py-1 bg-gray-200 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.write_href" title="글쓰기"><i class="fas fa-pencil-alt"></i><span class="hidden md:inline-block"> 글쓰기</span></router-link></li>
             <li v-if="v.update_href" class="px-2 py-1 bg-gray-200 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.update_href"><i class="far fa-edit"></i> <span class="hidden md:inline-block">수정</span></router-link></li>
@@ -127,18 +127,19 @@
           <li v-if="v.next_href" class="btn_next hover:bg-gray-300 py-3 px-4"><span class="nb_tit mr-3"><i class="fa fa-chevron-down" aria-hidden="true"></i> 다음글</span><router-link :to="v.next_href">{{v.next_wr_subject}}</router-link>  <span class="nb_date float-right">{{v.next_wr_date}}</span></li>
         </ul>
       </div>
-
-     
       <view-comment v-bind:v="v" ref="cmt"> </view-comment>
+      <list v-if="v.board.bo_use_list_view == 1"> </list>
     </article>
   </div>
 </template>
 
 <script>
 import viewcomment from "./view.comment";
+import list from "./list";
   export default {
     components : {
       'view-comment' : viewcomment,
+      'list' : list,
     },
     data () {
       return {
@@ -190,8 +191,7 @@ import viewcomment from "./view.comment";
           let self = this;
           let params = {};
           href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
-          console.log(href, href.indexOf('password.php'));
-          if(href.indexOf('password.php') == -1) {
+          if(href.indexOf('password.php') != -1) {
             self.$router.push({path : '/bbs/password', query : params});
           }else{
             window.req_api({

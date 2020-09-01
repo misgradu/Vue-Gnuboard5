@@ -83,7 +83,19 @@ function unset_data($data) {
   unset($data['cf_icode_server_port']);
   unset($data['cf_icode_token_key']);
   unset($data['cf_icode_token_key']);
+  unset($data['config']['cf_icode_id']);
+  unset($data['config']['cf_icode_pw']);
+  unset($data['config']['cf_googl_shorturl_apikey']);
+  unset($data['config']['cf_google_clientid']);
+  unset($data['config']['cf_google_secret']);
+  unset($data['config']['cf_icode_server_ip']);
+  unset($data['config']['cf_icode_server_port']);
+  unset($data['config']['cf_icode_token_key']);
+  unset($data['config']['cf_icode_token_key']);
   unset($data['member']['mb_password']);
+  unset($data['ss_name']);
+  unset($data['sst']);
+  unset($data['stx']);
   unset($data['sql']);
   unset($data['sql2']);
   unset($data['sql3']);
@@ -138,9 +150,15 @@ function VueCaptcha(){
     return $keystring;
   }
 }
-function Vue_move_update ($bo_table, $chk_bo_table, $wr_id_list, $opener_href) {
+function Vue_move_update($bo_table, $chk_bo_table, $wr_id_list, $opener_href) {
   global $msg;
   echo '{"redirect_url" : "'.str_replace(G5_URL, '', $opener_href).'", "msg" : "'.$msg.'"}';
   exit;
+}
+function Vue_memo_form_update_after($member_list, $str_nick_list, $redirect_url, $me_memo) {
+  alert($str_nick_list." 님께 쪽지를 전달하였습니다.", $redirect_url, false);
+}
+function Vue_memo_form_update_failed($member_list, $str_nick_list, $redirect_url, $me_memo) {
+  alert("회원아이디 오류 같습니다.", $redirect_url, false);
 }
 ?>

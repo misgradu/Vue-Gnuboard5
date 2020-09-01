@@ -3,8 +3,12 @@
     <t-alert variant="danger" show :dismissible="false">
       <i class="fa fa-check-circle" aria-hidden="true"></i> 회원가입약관 및 개인정보처리방침안내의 내용에 동의하셔야 회원가입 하실 수 있습니다.
     </t-alert>
-    <t-card class="border my-2">
-      SNS 계정으로 가입(지원예정)
+    <t-card class="border my-2" v-if="c.config.cf_social_login_use==1">
+      <div v-for="(social, i) in c.config.cf_social_servicelist.split(',')" :key="i" class="inline-block px-1">
+        <button :data-social="social">
+          <img :src="require('@/image/sns_'+social+'_s.png')" class="w-10 h-10">
+        </button>
+      </div>
     </t-card>
     <t-card class="border my-2">
       <template v-slot:header>
@@ -123,7 +127,7 @@
       </t-card>
       <div class="w-full">
         <t-button class="w-1/2 text-center" type="button" @click="$router.push('/')"> 취소 </t-button>
-        <t-button class="w-1/2 text-center" type="submit" variant="primary"> 회원가입 </t-button>
+        <t-button class="w-1/2 text-center" type="submit" variant="primary"> {{r.w ? '정보수정' : '회원가입'}} </t-button>
       </div>
     </form>
   </div>
@@ -199,7 +203,7 @@ export default {
           document.title = json.g5.title;
           self.cf_captcha = json.config.cf_captcha;
           self.cf_captcha_text = json.captcha;
-          self.profile_modify = true;
+          self.captcha_modify = true;
           self.captcha();
         }
       });

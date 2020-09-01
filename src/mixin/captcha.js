@@ -3,14 +3,13 @@ const captcha = {
     return {
       cf_captcha : null,
       cf_captcha_text : null,
-      profile_modify : false,
+      captcha_modify : false,
     }
   },
   methods: {
     captcha(){
-      console.log(this.profile_modify);
-      if(this.cf_captcha == 'kcaptcha' && this.$store.state.isLogin == false || this.profile_modify == true) {
-        console.log('?');
+      if(this.cf_captcha == 'kcaptcha' && this.$store.state.isLogin == false || this.captcha_modify == true) {
+        console.log(this.cf_captcha_text);
         var canvas = document.createElement("canvas");
         var input = document.createElement("input");
         var refresh = document.createElement("button");

@@ -419,7 +419,7 @@ $editor_html = editor_html('wr_content', $content, $is_dhtml_editor);
 
 $editor_js = '';
 $editor_js .= get_editor_js('wr_content', $is_dhtml_editor);
-$editor_js .= chk_editor_js('wr_content', $is_dhtml_editor);
+//$editor_js .= chk_editor_js('wr_content', $is_dhtml_editor);
 
 // 임시 저장된 글 수
 $autosave_count = autosave_count($member['mb_id']);

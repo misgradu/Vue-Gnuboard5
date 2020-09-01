@@ -63,7 +63,7 @@
         <div class="flex justify-between">
           <label for="wr_subject" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">제목</label>
           <div id="autosave_wrapper" class="w-auto whitespace-no-wrap text-xs mr-3 relative" v-if="v.is_member">
-            <div v-if="v.editor_content_js" v-append="v.editor_content_js"></div> 
+            <!--<div v-if="v.editor_content_js" v-append="v.editor_content_js"></div> -->
             <button type="button" id="btn_autosave" class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 rounded">임시 저장된 글 (<span id="autosave_count">{{v.autosave_count}}</span>)</button>
             <div id="autosave_pop" class="absolute z-10 top-0 mt-5 right-0 hidden bg-white border px-3 py-2 leading-8">
               <ul></ul>
@@ -79,7 +79,7 @@
         <div class="wr_content smarteditor2">
             <!-- 최소/최대 글자 수 사용 시 -->
             <p id="char_count_desc" v-if="v.write_min || v.write_max">이 게시판은 최소 <strong>{{v.write_min}}</strong>글자 이상, 최대 <strong>{{v.write_max}}</strong>글자 이하까지 글을 쓰실 수 있습니다.</p>
-            <div v-html="v.editor_html"> </div>
+            <div v-append="v.editor_html"> </div>
             <!-- 최소/최대 글자 수 사용 시 -->
             <div id="char_count_wrap" v-if="v.write_min || v.write_max"><span id="char_count"></span>글자</div>
         </div>
@@ -113,6 +113,9 @@ export default {
     }
   },
   methods : {
+    editor_html() {
+      return false;
+    },
     update () {
       let self = this;
       window.req_api({
@@ -128,8 +131,10 @@ export default {
     },
     fwrite_submit() {
       var f = this.$refs.fwrite;
-      var formData = new FormData(f);
       let self = this;
+      if(this.v.editor_js) eval(this.v.editor_js);
+      //eval(this.v.editor_js);
+      var formData = new FormData(f);
       window.req_api({
         write_token : true,
         bo_table : this.$route.params.bo_table,

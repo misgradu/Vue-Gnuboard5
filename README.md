@@ -50,7 +50,7 @@ npm run lint
 ### LICENSE
 
 MIT License
-Copyright (c) <2020> <copyright Vorfeed>
+Copyright (c) <2020> copyright Vorfeed
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -60,6 +60,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ### Demo
 ``` 
-vuegnu.dothome.co.kr
+http://vuegnu.dothome.co.kr
 데모사이트는 일부기능을 이용할 수 없습니다.
 ```

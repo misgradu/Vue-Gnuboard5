@@ -102,8 +102,25 @@
               <t-input value="" name="mb_password" ref="login_pw" id="login_pw" type="password" placeholder="비밀번호를 입력하세요." @keyup.enter="floginSubmit"/>
               <div class="flex justify-between mt-3">
                 <t-button v-on:click="floginSubmit"> 로그인 </t-button>
-                <t-button variant="success" type="button" @click="register">회원가입</t-button>
+                <div>
+                  <t-button variant="success" type="button" @click="register">회원가입</t-button>
+                  <t-button variant="error" type="button" @click="find_info">정보찾기</t-button>
+                </div>
               </div>
+            </t-modal>
+            <t-modal
+              ref="PasswordLostModal"
+              header="회원정보 찾기"
+            >
+              <form ref="password_lost" v-on:submit.prevent="password_lost_submit">
+                <p class=""> 회원가입 시 등록하신 이메일 주소를 입력해 주세요.</p>
+                <p class="pb-2"> 해당 이메일로 아이디와 비밀번호 정보를 보내드립니다. </p>
+                <t-input value="" name="mb_email" id="mb_email" type="password" placeholder="E-mail 주소." required @keyup.enter="floginSubmit"/>
+                <div ref="captcha" class="flex my-3"> </div>
+                <div class="flex justify-end mt-3">
+                  <t-button> 확인 </t-button>
+                </div>
+              </form>
             </t-modal>
           </div>
           <t-dropdown v-if="$store.state.isLogin == true">
@@ -174,7 +191,9 @@
 </template>
 
 <script>
-  export default {
+import captcha from './mixin/captcha.js'
+export default {
+    mixins : [captcha],
     name : 'top',
     methods : {
       themeChange () {
@@ -208,6 +227,24 @@
       register () {
         this.$router.push('/bbs/register');
         this.$refs.LoginModal.hide();
+      },
+      find_info () {
+        let self = this;
+        this.$refs.PasswordLostModal.show();
+        this.$refs.LoginModal.hide();
+        window.req_api({
+          captcha : true,
+        }).then(function(json) {        
+          console.log(json);
+          self.captcha_modify = true;
+          self.cf_captcha_text = json.captcha;
+        }).then(function(){
+          self.captcha();
+        });
+      },
+      password_lost_submit () {
+        var f = this.$refs.password_lost;
+        console.log(f);
       }
     },
     data: function () {

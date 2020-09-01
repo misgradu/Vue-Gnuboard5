@@ -64,7 +64,17 @@
           ms_id : ms_id,
         }).then(function(json) {
           alert(json.msg);
-          self.$router.go(0);
+          self.update();
+        });
+      },
+      update () {
+        let self = this;
+        window.req_api({
+          scrap : true,
+        }).then(function(json) {        
+          self.s = json;
+          self.list = json.list;
+          if(json.g5.title) document.title = json.g5.title;
         });
       }
     }

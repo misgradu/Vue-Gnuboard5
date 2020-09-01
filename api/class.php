@@ -39,6 +39,7 @@ class Vue {
     $this->fsearch = isset($_POST['fsearch']) ? $_POST['fsearch'] : null;
     $this->new = isset($_POST['new']) ? $_POST['new'] : null;
     $this->memo = isset($_POST['memo']) ? $_POST['memo'] : null;
+    $this->memo_form_update = isset($_POST['memo_form_update']) ? $_POST['memo_form_update'] : null;
     $this->scrap = isset($_POST['scrap']) ? $_POST['scrap'] : null;
     $this->scrap_delete = isset($_POST['scrap_delete']) ? $_POST['scrap_delete'] : null;
     $this->password = isset($_POST['password']) ? $_POST['password'] : null;
@@ -299,9 +300,15 @@ class Vue {
       @extract($_POST);
       @extract($_GET);
       $page = isset($_REQUEST['page']) ? (int)$_REQUEST['page'] : null;
-      //include_once('./board/board_common.php');      
-      include_once('./board/memo.php');      
+      //include_once('./board/board_common.php');
+      if($kind == "memo_form"){
+        include_once('./board/memo_form.php');      
+      }else {
+        include_once('./board/memo.php');      
+      }
       return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK );
+    }else if ($this->memo_form_update) {
+      include G5_BBS_PATH.'/memo_form_update.php';
     }else if ($this->scrap) {
       @extract($_POST);
       @extract($_GET);
@@ -340,7 +347,7 @@ class Vue {
       return json_encode($list, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK ); 
     }else if ($this->captcha) {
       $data = array();
-      $data['capthca'] = VueCaptcha();
+      $data['captcha'] = VueCaptcha();
       return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK ); 
     }else if ($this->point) {
       $page = isset($_REQUEST['page']) ? (int)$_REQUEST['page'] : null;
