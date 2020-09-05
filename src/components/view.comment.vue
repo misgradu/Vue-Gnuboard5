@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="felx mx-3">
-      <button type="button" class="cmt_btn hover:bg-gray-200 font-bold py-2 px-4 rounded my-3 w-full border rounded shadow bg-white" ref="cmt_toggle" @click="cmtToggle"><span class="total"><b>댓글</b> {{v.view.comment}}</span> <i class="fa fa-chevron-down"> </i></button>
+      <button type="button" class="dark:hover:bg-gray-600 dark:bg-gray-800 dark:border-gray-400 cmt_btn hover:bg-gray-200 font-bold py-2 px-4 rounded my-3 w-full border rounded shadow bg-white" ref="cmt_toggle" @click="cmtToggle"><span class="total"><b>댓글</b> {{v.view.comment}}</span> <i class="fa fa-chevron-down"> </i></button>
     </div>
     <!-- 댓글 시작 { -->
-    <p v-if="c.list.length == 0" id="bo_vc_empty" class="mx-3 border py-6 rounded bg-white px-3 text-center">등록된 댓글이 없습니다.</p>
+    <p v-if="c.list.length == 0" id="bo_vc_empty" class="mx-3 border py-6 rounded bg-white px-3 text-center dark:hover:bg-gray-600 dark:bg-gray-800 dark:border-gray-400">등록된 댓글이 없습니다.</p>
     <section id="bo_vc" v-if="c.list.length > 0 && c.list" class="mx-3" ref="bo_vc">
       <article :id="'c_'+row.wr_id" class="flex bg-white border rounded-lg mx-4 mt-2" v-for="(row, i) in c.list" :key="row.wr_id" :style="'margin-left:'+row.wr_comment_reply.length * 15">
         <div class="flex items-start pb-4 w-full">
@@ -71,7 +71,7 @@
         <h2 class="px-4 pb-2 text-gray-800 text-sm sound_only">댓글쓰기</h2>
         <span class="sound_only">내용</span>
         <strong id="char_cnt" v-if="c.comment_min || c.comment_max"><span id="char_count"></span>글자</strong>
-        <textarea id="wr_content" name="wr_content" ref="wr_content" maxlength="10000" required class="bg-white rounded border-2 leading-tight appearance-none border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 mt-3 font-medium placeholder-gray-700 focus:outline-none focus:border-gray-500" title="내용" placeholder="댓글내용을 입력해주세요"></textarea>
+        <textarea id="wr_content" name="wr_content" ref="wr_content" maxlength="10000" required class="dark:bg-gray-600 dark:border-gray-400 bg-white rounded border-2 leading-tight appearance-none border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 mt-3 font-medium placeholder-gray-700 focus:outline-none focus:border-gray-500" title="내용" placeholder="댓글내용을 입력해주세요"></textarea>
         <div class="flex flex-wrap mb-6">
             <div class="bo_vc_w_info flex">
               <div v-if="c.is_guest">
@@ -89,7 +89,7 @@
               </div>
               <div class="inline-flex items-center mt-3 ml-3">
                   <input type="checkbox" name="wr_secret" value="secret" id="wr_secret" class="selec_chk form-checkbox h-5 w-5 text-blue-600">
-                  <label for="wr_secret" class="ml-2 text-gray-700 select-none text-sm">비밀글</label>
+                  <label for="wr_secret" class="mx-2 text-gray-700 dark:text-gray-400 select-none text-sm">비밀글</label>
                 </div>
                 <button type="submit" id="btn_submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">댓글등록</button>
             </div>

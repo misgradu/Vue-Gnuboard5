@@ -1,5 +1,5 @@
 <template>
-<aside class="hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0" id="nav_menu">
+<aside class="hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 dark:border-gray-500 border-r" id="nav_menu">
   <div class="py-4 text-gray-500 dark:text-gray-400">
     <router-link class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" to="/">
       {{title}}
@@ -46,18 +46,21 @@
     },
     created(){
       let self = this;
-      var formData = new FormData();
-      formData.append('get_menu_db', true)
-      fetch('../../api/',{
-        method : 'post',
-        body : formData,
-      })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
+      window.req_api({
+        get_menu_db : true,
+      }).then(function(json) {        
         self.get_menu_db = json;
       });
+      window.req_api({
+        visit : true,
+      }).then(function(json) {
+        var visit = json.split(',');
+        self.$store.state.visit.today = visit[0];
+        self.$store.state.visit.yesterday = visit[1];
+        self.$store.state.visit.max = visit[2];
+        self.$store.state.visit.all = visit[3];
+      });
+
     },
     methods : {
       subToggle (i) {

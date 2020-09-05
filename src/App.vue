@@ -1,11 +1,19 @@
 <template>
-  <div id="app" class="flex h-screen bg-gray-50 dark:bg-gray-900" :class="{ 'theme-dark': dark }">
+  <div id="app" class="flex bg-gray-50 dark:bg-gray-900" :class="{ 'theme-dark': dark }">
     <gnu-header> </gnu-header>
-    <div class="flex flex-col flex-1" style="min-height:100vh">
+    <div class="flex flex-col flex-1 dark:bg-gray-700 dark:text-gray-400" style="min-height:100vh">
       <gnu-top> </gnu-top>
-      <router-view ref="body" :key="$route.fullPath"></router-view>
+      <router-view ref="body" class="dark:bg-gray-700 dark:text-gray-400" :key="$route.fullPath"></router-view>
     </div>
     <button style="display:none" id="themeChange" aria-label="Toggle color mode" @click="dark = !dark"> </button>
+    <div v-if="$store.state.loading == true" class="fixed z-50 top-0 left-0 w-full h-full justify-center items-center bg-black opacity-50">
+      <div class="items-center justify-center flex h-full w-full">
+        <svg class="animate-spin -ml-1 mr-3 h-32 w-32 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+    </div>
     <!--<gnu-footer> </gnu-footer>-->
   </div>
 </template>

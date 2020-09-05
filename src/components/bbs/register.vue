@@ -5,7 +5,7 @@
     </t-alert>
     <t-card class="border my-2" v-if="c.config.cf_social_login_use==1">
       <div v-for="(social, i) in c.config.cf_social_servicelist.split(',')" :key="i" class="inline-block px-1">
-        <button :data-social="social">
+        <button :data-social="social" @click="social_popup(social)">
           <img :src="require('@/image/sns_'+social+'_s.png')" class="w-10 h-10">
         </button>
       </div>
@@ -19,7 +19,7 @@
           </label>
         </div>
       </template>
-      <textarea class="w-full h-20 p-3 text-sm" v-text="c.config.cf_stipulation"> </textarea>
+      <textarea class="dark:bg-gray-600 dark:text-gray-300 w-full h-20 p-3 text-sm" v-text="c.config.cf_stipulation"> </textarea>
     </t-card>
     <t-card class="border my-2">
       <template v-slot:header>
@@ -38,9 +38,9 @@
         ]"
       >
       </t-table>
-      <textarea class="w-full h-20 p-3 text-sm" v-text="c.config.cf_privacy"> </textarea>
+      <textarea class="dark:bg-gray-600 dark:text-gray-300 w-full h-20 p-3 text-sm" v-text="c.config.cf_privacy"> </textarea>
     </t-card>
-    <div class="border my-2 rounded mx-auto shadow bg-white p-4">
+    <div class="border my-2 rounded mx-auto shadow bg-white p-4 dark:bg-gray-600 dark:text-gray-300 dark:border-gray-500">
       <label class="flex items-center flex justify-center w-full" @click="chkall">
         <div class="text-center flex justify-around mr-3"> 회원약관에 모두 동의 합니다</div>
         <t-checkbox name="chk_all" ref="chk_all" value="1" />
@@ -52,6 +52,7 @@
     </div>
   </div>
   <div v-else-if="agree==true && r">
+    <div v-append="r.POSTCODE"> </div>
     <form id="fregisterform" ref="fregisterform" name="fregisterform"  @submit.prevent="fregisterform_submit" class="m-3" method="post" enctype="multipart/form-data" autocomplete="off">
       <input type="hidden" name="w" :value="r.w">
       <input type="hidden" name="url" :value="r.urlencod">
@@ -91,7 +92,13 @@
         <t-input-group v-if="r.config.cf_use_tel" label="전화번호"> <t-input :value="r.member.mb_tel" name="mb_tel" type="text"/> </t-input-group>
         <t-input-group v-if="r.config.cf_use_hp" label="휴대폰번호"> <t-input :value="r.member.mb_hp" type="text"/> </t-input-group>
         <div v-if="r.config.cf_use_addr">
-          <t-input-group label="주소"> <t-input :value="r.member.mb_id" type="text"/> </t-input-group>
+          <t-input-group > 
+            <template v-slot:label>
+              주소
+              <t-button variant="primary" type="button" class="p-1 ml-3" @click="win_zip('fregisterform', 'mb_zip', 'mb_addr1', 'mb_addr2', 'mb_addr3', 'mb_addr_jibeon')"> 우편번호 </t-button>
+            </template>
+            <t-input :value="r.member.mb_id" name="mb_zip" type="text"/> 
+          </t-input-group>
           <t-input-group> <t-input :value="r.member.mb_addr1" size="50" name="mb_addr1" placeholder="기본주소" type="text"/> </t-input-group>
           <t-input-group> <t-input :value="r.member.mb_addr2" size="50" name="mb_addr2" placeholder="상세주소" type="text"/> </t-input-group>
           <t-input-group> <t-input :value="r.member.mb_addr3" size="50" name="mb_addr3" placeholder="참고항목" type="text"/> </t-input-group>
@@ -99,8 +106,8 @@
         </div>
       </t-card>
       <t-card header="기타 개인설정" class="my-4">
-        <t-input-group v-if="r.config.cf_use_signature" label="서명"> <t-textarea name="mb_signature" placeholder="서명" type="text" class="w-full bg-gray-100 border h-20 rounded p-3"> {{r.member.mb_signature}} </t-textarea> </t-input-group>
-        <t-input-group v-if="r.config.cf_use_profile" label="자기소개"> <t-textarea name="mb_profile" placeholder="자기소개" type="text" class="w-full bg-gray-100 border h-20 rounded p-3"> {{r.member.mb_profile}} </t-textarea> </t-input-group>
+        <t-input-group v-if="r.config.cf_use_signature" label="서명"> <t-textarea name="mb_signature" placeholder="서명" type="text" class="dark:bg-gray-600 dark:text-gray-300 w-full bg-gray-100 border h-20 rounded p-3"> {{r.member.mb_signature}} </t-textarea> </t-input-group>
+        <t-input-group v-if="r.config.cf_use_profile" label="자기소개"> <t-textarea name="mb_profile" placeholder="자기소개" type="text" class="dark:bg-gray-600 dark:text-gray-300 w-full bg-gray-100 border h-20 rounded p-3"> {{r.member.mb_profile}} </t-textarea> </t-input-group>
         <t-input-group v-if="r.config.cf_use_member_icon" label="회원아이콘" :feedback="r.config.cf_member_icon_height + '. gif, jpg, png파일만 가능하며 용량 '+ r.config.cf_member_icon_size + '바이트 이하'">
           <t-input name="mb_icon" type="file"/>
         </t-input-group>
@@ -119,7 +126,7 @@
           <t-checkbox name="mb_open" value="a" />
           <span class="ml-2 text-sm">다른분들이 나의 정보를 볼 수 있도록 합니다.</span>
         </label>
-        <t-input-group v-if="r.w == '' && r.config.cf_use_recommend" class="w-48"> <t-input :value="r.member.mb_id" id="reg_mb_recommend" name="mb_recommend" @change="reg_mb_recommend_check" placeholder="추천인 아이디" type="text"/> </t-input-group>
+        <t-input-group v-if="r.w == 'none' && r.config.cf_use_recommend==1" class="w-48"> <t-input :value="r.member.mb_id" id="reg_mb_recommend" name="mb_recommend" placeholder="추천인 아이디" type="text"/> </t-input-group>
         <t-input-group label="캡차" >
           <div ref="captcha" class="flex"> </div>
           <button @click="captcha" type="button"> 캡차 갱신 </button>
@@ -183,6 +190,142 @@ export default {
     });
   },
   methods : {
+    win_zip (frm_name, frm_zip, frm_addr1, frm_addr2, frm_addr3, frm_jibeon) {
+      var g5_is_mobile = false;
+      if(typeof daum === 'undefined'){
+        alert("다음 우편번호 postcode.v2.js 파일이 로드되지 않았습니다.");
+        return false;
+      }
+      var zip_case = 1;   //0이면 레이어, 1이면 페이지에 끼워 넣기, 2이면 새창
+      var complete_fn = function(data){
+        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+        // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+        var fullAddr = ''; // 최종 주소 변수
+        var extraAddr = ''; // 조합형 주소 변수
+        // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+          fullAddr = data.roadAddress;
+        } else { // 사용자가 지번 주소를 선택했을 경우(J)
+          fullAddr = data.jibunAddress;
+        }
+        // 사용자가 선택한 주소가 도로명 타입일때 조합한다.
+        if(data.userSelectedType === 'R'){
+            //법정동명이 있을 경우 추가한다.
+            if(data.bname !== ''){
+                extraAddr += data.bname;
+            }
+            // 건물명이 있을 경우 추가한다.
+            if(data.buildingName !== ''){
+                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+            extraAddr = (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+        }
+        // 우편번호와 주소 정보를 해당 필드에 넣고, 커서를 상세주소 필드로 이동한다.
+        var of = document[frm_name];
+        of[frm_zip].value = data.zonecode;
+        of[frm_addr1].value = fullAddr;
+        of[frm_addr3].value = extraAddr;
+        if(of[frm_jibeon] !== undefined){
+            of[frm_jibeon].value = data.userSelectedType;
+        }
+        setTimeout(function(){
+            of[frm_addr2].focus();
+        } , 100);
+      };
+      switch(zip_case) {
+        case 1 :    //iframe을 이용하여 페이지에 끼워 넣기
+          var daum_pape_id = 'daum_juso_page'+frm_zip,
+              element_wrap = document.getElementById(daum_pape_id),
+              currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+          if (element_wrap == null) {
+              element_wrap = document.createElement("div");
+              element_wrap.setAttribute("id", daum_pape_id);
+              element_wrap.style.cssText = 'display:none;border:1px solid;left:0;width:100%;height:300px;margin:5px 0;position:relative;-webkit-overflow-scrolling:touch;';
+              element_wrap.innerHTML = '<img src="//i1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-21px;z-index:1" class="close_daum_juso" alt="접기 버튼">';
+              // eslint-disable-next-line no-undef
+              $('form[name="'+frm_name+'"]').find('input[name="'+frm_addr1+'"]').before(element_wrap);
+              // eslint-disable-next-line no-undef
+              $("#"+daum_pape_id).off("click", ".close_daum_juso").on("click", ".close_daum_juso", function(e){
+                  e.preventDefault();
+                  // eslint-disable-next-line no-undef
+                  $(this).parent().hide();
+              });
+          }
+          // eslint-disable-next-line no-undef
+          // eslint-disable-next-line no-undef
+          new daum.Postcode({
+            oncomplete: function(data) {
+                complete_fn(data);
+                // iframe을 넣은 element를 안보이게 한다.
+                element_wrap.style.display = 'none';
+                // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
+                document.body.scrollTop = currentScroll;
+            },
+            // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분.
+            // iframe을 넣은 element의 높이값을 조정한다.
+            onresize : function(size) {
+                element_wrap.style.height = size.height + "px";
+            },
+            maxSuggestItems : g5_is_mobile ? 6 : 10,
+            width : '100%',
+            height : '100%'
+          }).embed(element_wrap);
+          // iframe을 넣은 element를 보이게 한다.
+          element_wrap.style.display = 'block';
+          break;
+        case 2 :    //새창으로 띄우기
+          // eslint-disable-next-line no-undef
+          new daum.Postcode({
+              oncomplete: function(data) {
+                  complete_fn(data);
+              }
+          }).open();
+          break;
+        default :   //iframe을 이용하여 레이어 띄우기
+          var rayer_id = 'daum_juso_rayer'+frm_zip,
+              element_layer = document.getElementById(rayer_id);
+          if (element_layer == null) {
+              element_layer = document.createElement("div");
+              element_layer.setAttribute("id", rayer_id);
+              element_layer.style.cssText = 'display:none;border:5px solid;position:fixed;width:300px;height:460px;left:50%;margin-left:-155px;top:50%;margin-top:-235px;overflow:hidden;-webkit-overflow-scrolling:touch;z-index:10000';
+              element_layer.innerHTML = '<img src="//i1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" class="close_daum_juso" alt="닫기 버튼">';
+              document.body.appendChild(element_layer);
+              // eslint-disable-next-line no-undef
+              jQuery("#"+rayer_id).off("click", ".close_daum_juso").on("click", ".close_daum_juso", function(e){
+                  e.preventDefault();
+                  // eslint-disable-next-line no-undef
+                  jQuery(this).parent().hide();
+              });
+          }
+          // eslint-disable-next-line no-undef
+          new daum.Postcode({
+              oncomplete: function(data) {
+                  complete_fn(data);
+                  // iframe을 넣은 element를 안보이게 한다.
+                  element_layer.style.display = 'none';
+              },
+              maxSuggestItems : g5_is_mobile ? 6 : 10,
+              width : '100%',
+              height : '100%'
+          }).embed(element_layer);
+          // iframe을 넣은 element를 보이게 한다.
+          element_layer.style.display = 'block';
+      }
+    },
+    social_popup(href) {
+      var url = window.location.protocol + "//" + window.location.host;
+      url = 'http://localhost/g5'
+      var pop_url = url + "/plugin/social/popup.php?provider="+href+"&url=" + url
+      var newWin = window.open(
+        pop_url, 
+        "social_sing_on", 
+        "location=0,status=0,scrollbars=1,width=600,height=500"
+      );
+      if(!newWin || newWin.closed || typeof newWin.closed=='undefined')
+      alert('브라우저에서 팝업이 차단되어 있습니다. 팝업 활성화 후 다시 시도해 주세요.');
+    },
     regsiter_modify () {
       let self = this;
       console.log(self.$store.state.member.mb_id);

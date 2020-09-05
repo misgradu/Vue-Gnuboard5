@@ -188,6 +188,9 @@ module.exports = {
     divideColor: ['dark'],
     boxShadow: ['focus', 'dark:focus'],
   },
+  future: {
+    removeDeprecatedGapUtilities: true,
+  },
   plugins: [
     require('tailwindcss-multi-theme'),
     // eslint-disable-next-line no-unused-vars

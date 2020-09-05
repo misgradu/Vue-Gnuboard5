@@ -24,7 +24,7 @@ const captcha = {
         sound.className=classStyle;
         sound.type="button";
         sound.innerHTML = '<i class="fas fa-volume-up"></i>';
-        input.className = "border py-1 px-2";
+        input.className = "border py-1 px-2 dark:bg-gray-500";
         input.style.width = "100px";
         input.name="captcha_key";
         input.id="captcha_key";
@@ -47,6 +47,7 @@ const captcha = {
         canvas.id = "Kcaptcha";
         canvas.width = 100;
         canvas.height = 50;
+        canvas.style.background= "#fff";
         var ctx = canvas.getContext("2d");
         ctx.font = "25px Georgia";
         ctx.strokeText(this.cf_captcha_text, 5 , 30);

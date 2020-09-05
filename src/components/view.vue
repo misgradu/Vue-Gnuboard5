@@ -1,11 +1,11 @@
 <template>
-  <div class="my-4">
+  <div class="my-4 dark:bg-gray-700 dark:text-gray-400">
     <t-alert variant="danger" show v-if="v.msg" :dismissible="false">
       {{v.msg}}
     </t-alert>
-    <article id="bo_v" class="w-full dark:bg-gray-900 h-full dark:text-gray-400" v-if="v.view">
-      <section class="mx-3 border bg-white mb-3 px-3 rounded dark:bg-gray-900 dark:text-gray-400">
-        <header class="py-3 border-b">
+    <article id="bo_v" class="w-full dark:bg-gray-700 h-full dark:text-gray-400" v-if="v.view">
+      <section class="mx-3 border bg-white mb-3 px-3 rounded dark:bg-gray-900 dark:text-gray-400 dark:border-gray-400">
+        <header class="py-3 border-b dark:border-gray-400">
             <h2 id="bo_v_title">
                 <span v-if="v.view.ca_name" class="bo_v_cate bg-gray-800 p-2 rounded text-gray-100">{{v.view.ca_name}}</span> 
                 <span class="bo_v_tit">
@@ -13,28 +13,28 @@
                 </span>
             </h2>
         </header>
-        <section id="bo_v_info" class="border-b flex ">
+        <section id="bo_v_info" class="border-b flex dark:border-gray-400">
           <h2 class="hidden">페이지 정보</h2>
-          <div class="profile_info flex items-center w-full py-1 ">
+          <div class="profile_info flex items-center w-full py-1">
             <div class="profile_info_ct items-center flex w-full">
               <span class="hidden">작성자</span> <span class="whitespace-no-wrap md:mr-0 mr-3" v-html="view.name"> </span> <span class='text-xs' v-if="view.is_ip_view"> {{$view.ip}} </span>
             </div>
             <div class="flex ml-2 w-full justify-end text-xs whitespace-no-wrap flex-wrap">
-              <span class="hidden">댓글</span><span class="px-1 text-gray-600"><a href="#bo_vc"> <i class="far fa-comment-dots"></i> {{view.wr_comment}} 건</a></span>
-              <span class="hidden">조회</span><span class="px-1 text-gray-600"><i class="far fa-eye"></i> {{view.wr_hit}} 회</span>
-              <span class="if_date px-1 text-gray-600"><span class="hidden">작성일</span><i class="far fa-clock"></i> {{view.datetime}} </span>
+              <span class="hidden">댓글</span><span class="px-1 text-gray-600 dark:text-gray-400"><a href="#bo_vc"> <i class="far fa-comment-dots"></i> {{view.wr_comment}} 건</a></span>
+              <span class="hidden">조회</span><span class="px-1 text-gray-600 dark:text-gray-400"><i class="far fa-eye"></i> {{view.wr_hit}} 회</span>
+              <span class="if_date px-1 text-gray-600 dark:text-gray-400"><span class="hidden">작성일</span><i class="far fa-clock"></i> {{view.datetime}} </span>
             </div>
           </div>
         </section>
-        <ul class="flex py-3 border-b justify-end whitespace-no-wrap">
-          <li class="px-2 py-1 bg-gray-200 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="'/'+$route.params.bo_table" title="목록"> <i class="fa fa-list" aria-hidden="true"></i> <span class="hidden md:inline-block">목록</span></router-link></li>
-            <li class="px-2 py-1 bg-gray-200 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.reply_href" title="답변"><i class="fas fa-reply"></i><span class="hidden md:inline-block">답변</span></router-link></li>
-            <li class="px-2 py-1 bg-gray-200 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.write_href" title="글쓰기"><i class="fas fa-pencil-alt"></i><span class="hidden md:inline-block"> 글쓰기</span></router-link></li>
-            <li v-if="v.update_href" class="px-2 py-1 bg-gray-200 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.update_href"><i class="far fa-edit"></i> <span class="hidden md:inline-block">수정</span></router-link></li>
-            <li v-if="v.delete_href" class="px-2 py-1 bg-gray-200 mx-1 md:mx-2 rounded hover:bg-gray-400"><a :href="v.delete_href" v-on:click.prevent.stop="del(v.delete_href)"><i class="fa fa-trash-alt"></i> <span class="hidden md:inline-block">삭제</span></a></li>
-            <li v-if="v.copy_href" class="px-2 py-1 bg-gray-200 mx-1 md:mx-2 rounded hover:bg-gray-400"><a :href="v.copy_href" onclick="board_move(this.href); return false;"><i class="far fa-copy"></i> <span class="hidden md:inline-block">복사</span></a></li>
-            <li v-if="v.move_href" class="px-2 py-1 bg-gray-200 mx-1 md:mx-2 rounded hover:bg-gray-400"><a :href="v.move_href" onclick="board_move(this.href); return false;"><i class="fas fa-arrows-alt"></i> <span class="hidden md:inline-block">이동</span></a></li>
-            <li v-if="v.search_href" class="px-2 py-1 bg-gray-200 mx-1 md:mx-2 rounded hover:bg-gray-400"><a :href="v.search_href"><i class="fas fa-search"></i> <span class="hidden md:inline-block">검색</span></a></li>
+        <ul class="flex py-3 border-b justify-end whitespace-no-wrap dark:border-gray-400">
+          <li class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="'/'+$route.params.bo_table" title="목록"> <i class="fa fa-list" aria-hidden="true"></i> <span class="hidden md:inline-block">목록</span></router-link></li>
+            <li class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.reply_href" title="답변"><i class="fas fa-reply"></i><span class="hidden md:inline-block">답변</span></router-link></li>
+            <li class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.write_href" title="글쓰기"><i class="fas fa-pencil-alt"></i><span class="hidden md:inline-block"> 글쓰기</span></router-link></li>
+            <li v-if="v.update_href" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.update_href"><i class="far fa-edit"></i> <span class="hidden md:inline-block">수정</span></router-link></li>
+            <li v-if="v.delete_href" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><a :href="v.delete_href" v-on:click.prevent.stop="del(v.delete_href)"><i class="fa fa-trash-alt"></i> <span class="hidden md:inline-block">삭제</span></a></li>
+            <li v-if="v.copy_href" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><a :href="v.copy_href" onclick="board_move(this.href); return false;"><i class="far fa-copy"></i> <span class="hidden md:inline-block">복사</span></a></li>
+            <li v-if="v.move_href" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><a :href="v.move_href" onclick="board_move(this.href); return false;"><i class="fas fa-arrows-alt"></i> <span class="hidden md:inline-block">이동</span></a></li>
+            <li v-if="v.search_href" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><a :href="v.search_href"><i class="fas fa-search"></i> <span class="hidden md:inline-block">검색</span></a></li>
         </ul>
         <t-modal ref="scrap">
           <template v-slot:header>
@@ -87,7 +87,7 @@
           <!-- }  추천 비추천 끝 -->
           <!-- 첨부파일 시작 { -->
           <section id="bo_v_file" class="w-full" v-if="view.file.count > 0">
-              <ul class="border my-2 px-2 py-2 mx-3 bg-white">
+              <ul class="border my-2 px-2 py-2 mx-3 bg-white dark:bg-gray-700 rounded dark:border-gray-500">
                 <li v-for="row in view.file" :key="row.file" >
                   <div v-if="row.file" class="flex justify-between">
                     <p>
@@ -96,7 +96,7 @@
                           <strong>{{row.source}}</strong> {{row.bf_content}} ({{row.size}})
                       </a>
                     </p>
-                    <p class="flex text-right text-sm text-gray-600">
+                    <p class="flex text-right text-sm text-gray-600 dark:text-gray-400">
                         <span class="bo_v_file_cnt">{{row.download}}회 다운로드 | DATE : {{row.datetime}}</span>
                     </p>
                   </div>
@@ -105,7 +105,7 @@
           </section>
           <!-- } 첨부파일 끝 -->
           <!-- 관련링크 시작 { -->
-          <section id="bo_v_link" v-if="view.link.length > 0">
+          <section id="bo_v_link" class="dark:bg-gray-700 rounded dark:border-gray-500 dark:text-gray-400" v-if="view.link.length > 0">
             <h2>관련링크</h2>
             <ul>
               <li v-for="row in view.link" :key="row.file">
@@ -122,9 +122,9 @@
         </section>
       </section>
       <div class="mx-3" v-if="v.view.prev_href || v.next_href">
-        <ul class="w-full border rounded bg-white dark:bg-gray-900 dark:text-gray-400">
-          <li v-if="v.prev_href" class="btn_prv hover:bg-gray-300 py-3 px-4 border-b"><span class="nb_tit mr-3"><i class="fa fa-chevron-up" aria-hidden="true"></i> 이전글</span><router-link :to="v.prev_href" >{{v.prev_wr_subject}}</router-link> <span class="nb_date float-right">{{v.prev_wr_date}}</span></li>
-          <li v-if="v.next_href" class="btn_next hover:bg-gray-300 py-3 px-4"><span class="nb_tit mr-3"><i class="fa fa-chevron-down" aria-hidden="true"></i> 다음글</span><router-link :to="v.next_href">{{v.next_wr_subject}}</router-link>  <span class="nb_date float-right">{{v.next_wr_date}}</span></li>
+        <ul class="w-full border rounded bg-white dark:bg-gray-900 dark:text-gray-400 dark:border-gray-400">
+          <li v-if="v.prev_href" class="btn_prv hover:bg-gray-300 py-3 px-4 border-b dark:border-gray-400 dark:hover:bg-gray-600"><span class="nb_tit mr-3"><i class="fa fa-chevron-up" aria-hidden="true"></i> 이전글</span><router-link :to="v.prev_href" >{{v.prev_wr_subject}}</router-link> <span class="nb_date float-right">{{v.prev_wr_date}}</span></li>
+          <li v-if="v.next_href" class="btn_next hover:bg-gray-300 dark:hover:bg-gray-600 py-3 px-4"><span class="nb_tit mr-3"><i class="fa fa-chevron-down" aria-hidden="true"></i> 다음글</span><router-link :to="v.next_href">{{v.next_wr_subject}}</router-link>  <span class="nb_date float-right">{{v.next_wr_date}}</span></li>
         </ul>
       </div>
       <view-comment v-bind:v="v" ref="cmt"> </view-comment>

@@ -12,6 +12,12 @@ Vue.use(VueTailwind, theme);
 Vue.filter("number_format", val =>{
   return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 });
+Vue.filter('round', (value, decimals) => {
+  if (!value) value = 0;
+  if (!decimals) decimals = 0;
+  value = Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
+  return value;
+});
 const store = new Vuex.Store({
   state: {
     isLogin : false,
@@ -20,6 +26,13 @@ const store = new Vuex.Store({
       mb_cnt : 0,
       total_cnt : 0,
     },
+    visit : {
+      today : 0,
+      yesterday : 0,
+      max : 0,
+      all : 0,
+    },
+    loading : false,
   },
   mutations: {
     async Login (state) {
