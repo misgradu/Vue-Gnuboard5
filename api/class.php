@@ -48,6 +48,10 @@ class Vue {
     $this->current_connect = isset($_POST['current_connect']) ? $_POST['current_connect'] : null;
     $this->captcha = isset($_POST['captcha']) ? $_POST['captcha'] : null;
     $this->point = isset($_POST['point']) ? $_POST['point'] : null;
+    $this->visit = isset($_POST['visit']) ? $_POST['visit'] : null;
+    $this->poll = isset($_POST['poll']) ? $_POST['poll'] : null;
+    $this->poll_update = isset($_POST['poll_update']) ? $_POST['poll_update'] : null;
+    $this->poll_result = isset($_POST['poll_result']) ? $_POST['poll_result'] : null;
   }
   public function result() {
     global $g5, $board, $board_skin_path, $wr_seo_title, $bo_table, $config, $member;
@@ -358,10 +362,58 @@ class Vue {
       }
       $data = unset_data($data);
       return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK );    
+    }else if ($this->visit) {
+      return json_encode($config['cf_visit'], JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK );    
+    }else if ($this->poll) {
+      return json_encode($this->poll(), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK );    
+    }else if ($this->poll_update) {
+      @extract($_POST);
+      @extract($_GET);
+      include_once('./board/poll_update.php');
+    }else if ($this->poll_result) {
+      @extract($_POST);
+      @extract($_GET);
+      include_once('./board/poll_result.php');
+      $data = unset_data($data);
+      return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK ); 
     }
   }
   //내부 함수
-  
+
+  // 설문조사
+  function poll($skin_dir='basic', $po_id=false)
+  {
+      global $config, $member, $g5, $is_admin;
+      // 투표번호가 넘어오지 않았다면 가장 큰(최근에 등록한) 투표번호를 얻는다
+      if (!$po_id) {
+          $row = sql_fetch(" select MAX(po_id) as max_po_id from {$g5['poll_table']} ");
+          $po_id = $row['max_po_id'];
+      }
+      if(!$po_id)
+          return;
+      if(preg_match('#^theme/(.+)$#', $skin_dir, $match)) {
+          if (G5_IS_MOBILE) {
+              $poll_skin_path = G5_THEME_MOBILE_PATH.'/'.G5_SKIN_DIR.'/poll/'.$match[1];
+              if(!is_dir($poll_skin_path))
+                  $poll_skin_path = G5_THEME_PATH.'/'.G5_SKIN_DIR.'/poll/'.$match[1];
+              $poll_skin_url = str_replace(G5_PATH, G5_URL, $poll_skin_path);
+          } else {
+              $poll_skin_path = G5_THEME_PATH.'/'.G5_SKIN_DIR.'/poll/'.$match[1];
+              $poll_skin_url = str_replace(G5_PATH, G5_URL, $poll_skin_path);
+          }
+          //$skin_dir = $match[1];
+      } else {
+          if (G5_IS_MOBILE) {
+              $poll_skin_path = G5_MOBILE_PATH.'/'.G5_SKIN_DIR.'/poll/'.$skin_dir;
+              $poll_skin_url  = G5_MOBILE_URL.'/'.G5_SKIN_DIR.'/poll/'.$skin_dir;
+          } else {
+              $poll_skin_path = G5_SKIN_PATH.'/poll/'.$skin_dir;
+              $poll_skin_url  = G5_SKIN_URL.'/poll/'.$skin_dir;
+          }
+      }
+      $po = sql_fetch(" select * from {$g5['poll_table']} where po_id = '$po_id' ");
+      return $po;
+  }
   function latest($bo_table, $rows=10, $subject_len=40, $options='') {
     global $g5;
     $list = array();
