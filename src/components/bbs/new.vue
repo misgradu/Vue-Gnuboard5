@@ -1,6 +1,6 @@
 <template>
   <div class="m-5 mb-20">
-    <div v-if="n" class="flex border rouned">
+    <div v-if="n" class="flex border rouned dark:border-gray-600">
       <t-select name="gr_id" id="gr_id" ref="gr_id"
       :options="n.group_select" />      
       <t-select name="view" id="view" ref="view"
@@ -14,7 +14,7 @@
       <t-button variant="primary" class="whitespace-no-wrap" @click="search"> 검색 </t-button>
     </div>
     <div class="text-center text-xs my-2"> <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-teal-100 text-teal-800"> 회원 아이디만 검색 가능 </span> </div>
-    <div v-for="row in list" :key="row.wr_id" class="border-b py-2 items-center px-1 table w-full">
+    <div v-for="row in list" :key="row.wr_id" class="border-b py-2 items-center px-1 table w-full dark:border-gray-600">
       <div class="table-row">
       <div class="w-20 whitespace-no-wrap	table-cell"> <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"> {{row.gr_subject}} </span> </div>
       <div class="w-20 whitespace-no-wrap	table-cell"> <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800"> {{row.bo_subject}} </span> </div>
@@ -23,7 +23,7 @@
       <div class="w-16 whitespace-no-wrap	table-cell"> {{row.datetime2}} </div>
       </div>
     </div>
-    <div class="p-5 shadow text-center my-4 border bg-white" v-if="list.length == 0"> 게시물이 없습니다 </div>
+    <div class="p-5 shadow text-center my-4 border bg-white dark:bg-gray-900 dark:text-gray-400 dark:border-gray-600" v-if="list.length == 0"> 게시물이 없습니다 </div>
     <t-pagination
       :total-items="n.total_count"
       :per-page="n.perPage"

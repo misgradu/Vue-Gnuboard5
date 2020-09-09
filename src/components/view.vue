@@ -167,6 +167,7 @@ import list from "./list";
         self.$store.state.connect = json.connect;
         console.log(self.v);
         if(json.g5_title) document.title = json.g5.title;
+        self.$store.commit('PIPButton', self.view.wr_content);
       });
     },
     mounted () {

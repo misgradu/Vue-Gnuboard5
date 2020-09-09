@@ -9,6 +9,7 @@ include_once('./hook.lib.php');
 
 class Vue { 
   function __construct() {
+    $this->title = isset($_POST['title']) ? $_POST['title'] : null;
     $this->get_menu_db = isset($_POST['get_menu_db']) ? $_POST['get_menu_db'] : null;
     $this->latest = isset($_POST['latest']) ? $_POST['latest'] : null;
     $this->view = isset($_POST['view']) ? $_POST['view'] : null;
@@ -58,7 +59,11 @@ class Vue {
     $sql = " select sum(IF(mb_id<>'',1,0)) as mb_cnt, count(*) as total_cnt from {$g5['login_table']}  where mb_id <> '{$config['cf_admin']}' ";
     $row = sql_fetch($sql);
     $data['connect'] = $row;
-    if ($this->get_menu_db) {
+    if ($this->title){
+      $data = array();
+      $data['g5_title'] = $config['cf_title'];
+      return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK );
+    }else if ($this->get_menu_db) {
       $menu_datas = get_menu_db(0, true);
       for ($i=0; $i < count($menu_datas) ; $i++) { 
         $menu_datas[$i]['me_link'] = str_replace(G5_URL, '' , $menu_datas[$i]['me_link']);

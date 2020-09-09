@@ -112,8 +112,10 @@ function unset_data($data) {
       unset($data['list'][$i]['wr_password']);
     }
   }
-  unset($data['view']['wr_password']);
-  unset($data['view']['wr_ip']);
+  if($data['view']) {
+    unset($data['view']['wr_password']);
+    unset($data['view']['wr_ip']);
+  }
   return $data;
 }
 function delete_all($tmp_array, $board) {

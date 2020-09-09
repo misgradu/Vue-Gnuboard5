@@ -33,6 +33,8 @@ const store = new Vuex.Store({
       all : 0,
     },
     loading : false,
+    pip : false,
+    youtube : null,
   },
   mutations: {
     async Login (state) {
@@ -73,6 +75,52 @@ const store = new Vuex.Store({
         state.member = {};
       });
     },
+    async PIP(state, yt) {
+      state.pip = true;
+      document.getElementById('pip').appendChild(yt);
+    },
+    async PIPClose(state) {
+      document.getElementById('pip').removeChild(document.querySelector('#pip iframe'));
+      document.getElementById('pip_wrapper').classList.add('hidden');
+      state.pip = false;
+    },
+    async PIPHide() {
+      if(document.getElementById('pip').classList.contains('hidden'))
+        document.getElementById('pip').classList.remove('hidden');
+      else
+        document.getElementById('pip').classList.add('hidden');
+      //document.getElementById('pip_wrapper').classList.add('hidden');
+    },
+    PIPDrag : function(e){
+      console.log(e);
+    },
+    async GetYoutube(state) {
+      var iframe = document.querySelectorAll('iframe');
+      if(!iframe) {
+        alert('PIP모드로 전환할 유튜브 동영상이 없습니다.');
+      }else if(iframe.length > 1){
+        document.getElementById('pip_modal').click();
+        state.youtube = iframe;
+        //document.getElementById('PIPModal_body').innerHTML = '';
+
+      }else{
+        state.pip = false;
+        await this.commit('PIP', iframe[0].cloneNode(true));
+        document.getElementById('pip_wrapper').classList.remove('hidden');
+      }
+    },
+    async PIPChoice(state, i){
+      state.pip = false;
+      await this.commit('PIP', state.youtube[i].cloneNode(true));
+      state.youtube = null,
+      document.getElementById('pip_wrapper').classList.remove('hidden');
+      document.getElementById('pip_modal_hide').click();
+    },
+    async PIPButton(state, html){
+      if(html.indexOf('youtube') != -1){
+        document.getElementById('pip_button').classList.remove('hidden');
+      }
+    }
   }
 });
 Vue.config.productionTip = false;

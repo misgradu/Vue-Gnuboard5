@@ -41,7 +41,7 @@
     data () {
       return {
         get_menu_db : [],
-        title : window.title,
+        title : '그누보드5(Vue)',
       }   
     },
     created(){
@@ -60,7 +60,11 @@
         self.$store.state.visit.max = visit[2];
         self.$store.state.visit.all = visit[3];
       });
-
+      window.req_api({
+        title : true,
+      }).then(function(json) {        
+        self.title = json.g5_title;
+      });
     },
     methods : {
       subToggle (i) {

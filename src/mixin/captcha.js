@@ -40,7 +40,7 @@ const captcha = {
           window.req_api({
             captcha : true,
           }).then(function(json){
-            self.cf_captcha_text = json.capthca;
+            self.cf_captcha_text = json.captcha;
             self.captcha();
           });
         }, false);

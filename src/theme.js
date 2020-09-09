@@ -1,6 +1,6 @@
 const theme = {
   TInput: {
-    classes: 'bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full leading-normal dark:bg-gray-700 dark:text-gray-400',
+    classes: 'bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full leading-normal dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600',
     variants: {
       error: 'text-red-600 bg-red-100 focus:outline-none focus:shadow-outline border border-red-300 rounded py-2 px-4 block w-full leading-normal placeholder-red-300',
       success: 'text-green-600 bg-green-100 focus:outline-none focus:shadow-outline border border-green-300 rounded py-2 px-4 block w-full leading-normal placeholder-green-300',
@@ -17,7 +17,7 @@ const theme = {
   },
   TSelect: {
     fixedClasses: 'form-select',
-    classes: '',
+    classes: 'dark:border-gray-600 dark:bg-gray-900',
     variants: {
       danger: 'border-red-300 bg-red-100',
       success: 'border-green-300 bg-green-100'

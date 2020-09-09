@@ -14,6 +14,31 @@
         </svg>
       </div>
     </div>
+    <button @click="$refs.PIPModal.show()" type="button" class="hide" id="pip_modal"></button>
+    <button @click="$refs.PIPModal.hide()" type="button" class="hide" id="pip_modal_hide"></button>
+    <t-modal header="PIP" ref="PIPModal">
+      <div v-if="$store.state.youtube">
+        <div v-for="(item, i) in $store.state.youtube" :key="i">
+          <t-button variant="success" class="my-1 w-full" @click="$store.commit('PIPChoice', i)">
+          {{item.src}}
+          </t-button>
+        </div>
+      </div>
+    </t-modal>
+    <div class="fixed position bottom-0 right-0 z-50 m-5 hidden" id="pip_button">
+      <t-button variant="primary" @click="$store.commit('GetYoutube')"> PIP </t-button>
+    </div>
+    <div class="fixed position bottom-0 right-0 z-50 hidden" id="pip_wrapper">
+      <div class="p-2 bg-white border dark:border-gray-600 dark:bg-gray-900 dark:text-gray-400 flex justify-between items-end"> 
+        <div class="cursor-move select-none" @mousedown="$store.commit('PIPDrag')"> PIP모드 </div>
+        <div> 
+          <button class="px-2 hover:text-teal-500" @click="$store.commit('PIPHide')"> <i class="fas fa-window-minimize"></i> </button> 
+          <button class="px-2 hover:text-teal-500" @click="$store.commit('PIPClose')"> <i class="fas fa-times"></i> </button> 
+        </div>
+      </div>
+      <div id="pip"> </div>
+      <!--<iframe width="560" height="315" id="yt_pip" src="https://www.youtube.com/embed/LX7NXsRBR8I" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+    </div>
     <!--<gnu-footer> </gnu-footer>-->
   </div>
 </template>

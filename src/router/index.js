@@ -17,6 +17,8 @@ import faq from '@/components/bbs/faq'
 import content from '@/components/content/index'
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) { // 해당 경로에서 또 호출했을떄 에러 처리
+  document.getElementById('nav_menu').classList.add('hidden');
+  document.getElementById('pip_button').classList.add('hidden');
   return originalPush.call(this, location).catch(err => err)
 };
 Vue.use(VueRouter); // Vue 라이브러리를 인식하게끔 상단에 Vue 를 임포트 해준다!
