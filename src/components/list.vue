@@ -137,14 +137,14 @@
           <div class="dark:text-gray-400 md:flex md:items-center md:justify-end md:float-none float-right py-1 pl-1 text-sm md:border-b text-right pr-2 whitespace-no-wrap text-gray-600 md:mr-0 md:text-gray-700 dark:border-gray-600 " v-bind:class="{'bg-blue-100 dark:bg-blue-900' : row.is_notice}"> {{row.datetime2}} </div>
           <div class="dark:text-gray-400 md:flex md:items-center md:justify-end md:hidden clearfix border-b border-t w-full -mt-px dark:border-gray-600 " v-bind:class="{'bg-blue-100 dark:bg-blue-900' : row.is_notice}"></div>
         </div>
-        <div class="rounded mx-3 flex justify-center shadow p-3 bg-white dark:bg-gray-700 dark:text-gray-400" v-if="list.list.length == 0"> 게시물이 없습니다.</div>
+        <div class="rounded mx-3 flex justify-center shadow p-3 bg-white dark:bg-gray-700 dark:text-gray-400" v-if="typeof list.list != 'number' && list.list.length == 0"> 게시물이 없습니다.</div>
       </div>
-        <t-pagination
+        <t-pagination v-if="$route.query.page"
           :total-items="list.total_page"
           :per-page="list.perpage"
           :limit="list.limit"
           :disabled="false"
-          v-model="$route.query.page"
+          :v-model="parseInt($route.query.page)"
           @change="pageMove"
         />
       <div class="bo_fx" v-if="list.write_href || list.is_checkbox == true || list.list_href">
@@ -167,7 +167,7 @@ export default {
     return {
       list : {
         msg : null,
-        list : [],
+        list : 0,
       },
       colspan : colspan,
       col : ["2.5rem", "auto", "8rem", "4rem", "4rem"],
@@ -309,10 +309,10 @@ export default {
       this.colspan = 5;
       this.col = ["2.5rem", "auto", "8rem", "4rem", "4rem"];
       let self = this;
-      var sfl = document.getElementById('sfl').value;
-      var stx = document.getElementById('stx').value;
+      this.$route.query.sfl = document.getElementById('sfl').value;
+      this.$route.query.stx = document.getElementById('stx').value;
       window.req_api({
-        url : "?sca=&sop=and&sfl=" + sfl + "&stx="+stx,
+        url : this.queryString(),
         list : true,
         bo_table : this.$route.params.bo_table,
       }).then(function(json){
@@ -328,16 +328,16 @@ export default {
         document.title = json.title;
         self.$store.state.connect = json.connect;
         self.$modal.hide('Search-Modal');
-        self.sfl = sfl;
-        self.stx = stx;
-        self.sca = '';
+        var url = '/' + self.$route.params.bo_table + self.queryString();
+        window.history.pushState({}, '', url);        
       })
     },
     pageMove (page) {
       this.$route.query.page = page;
-      console.log('route', this.$route.params.bo_table, this.$route.query);
       this.update();
-      this.$router.push({ name : 'list' , params : this.$route.params.bo_table, query : this.$route.query})
+      //this.$router.push({ name : 'list' , params : {bo_table : this.$route.params.bo_table}, query : this.$route.query})
+      var url = '/' + this.$route.params.bo_table + this.queryString();
+      window.history.pushState({}, '', url);
     },
     chkall () {
       const all_chk = this.$refs.chkall[0].checked;
@@ -380,6 +380,7 @@ export default {
     if(!this.$route.query.page) this.$route.query.page = 1;
     this.update();
   },
+  
   /*
   beforeRouteUpdate (to, from, next) {
     console.log('route2');

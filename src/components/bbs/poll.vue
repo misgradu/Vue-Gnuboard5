@@ -131,17 +131,18 @@ export default {
     window.req_api({
       poll : true,
     }).then(function(json) {
-      self.poll = json;
-      if(json.po_poll1) self.list.push({label : json.po_poll1, value : 1});
-      if(json.po_poll2) self.list.push({label : json.po_poll2, value : 2});
-      if(json.po_poll3) self.list.push({label : json.po_poll3, value : 3});
-      if(json.po_poll4) self.list.push({label : json.po_poll4, value : 4});
-      if(json.po_poll5) self.list.push({label : json.po_poll5, value : 5});
-      if(json.po_poll6) self.list.push({label : json.po_poll6, value : 6});
-      if(json.po_poll7) self.list.push({label : json.po_poll7, value : 7});
-      if(json.po_poll8) self.list.push({label : json.po_poll8, value : 8});
-      if(json.po_poll9) self.list.push({label : json.po_poll9, value : 9});
-      console.log(self.list);
+      if(json != null) {
+        self.poll = json;
+        if(json.po_poll1) self.list.push({label : json.po_poll1, value : 1});
+        if(json.po_poll2) self.list.push({label : json.po_poll2, value : 2});
+        if(json.po_poll3) self.list.push({label : json.po_poll3, value : 3});
+        if(json.po_poll4) self.list.push({label : json.po_poll4, value : 4});
+        if(json.po_poll5) self.list.push({label : json.po_poll5, value : 5});
+        if(json.po_poll6) self.list.push({label : json.po_poll6, value : 6});
+        if(json.po_poll7) self.list.push({label : json.po_poll7, value : 7});
+        if(json.po_poll8) self.list.push({label : json.po_poll8, value : 8});
+        if(json.po_poll9) self.list.push({label : json.po_poll9, value : 9});
+      }
     });
   } 
 }

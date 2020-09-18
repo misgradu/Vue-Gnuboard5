@@ -27,7 +27,7 @@
           </div>
         </section>
         <ul class="flex py-3 border-b justify-end whitespace-no-wrap dark:border-gray-400">
-          <li class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="'/'+$route.params.bo_table" title="목록"> <i class="fa fa-list" aria-hidden="true"></i> <span class="hidden md:inline-block">목록</span></router-link></li>
+          <li class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="{name : 'list' ,  params : $route.params.bo_table, query : $route.query }" title="목록"> <i class="fa fa-list" aria-hidden="true"></i> <span class="hidden md:inline-block">목록</span></router-link></li>
             <li class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.reply_href" title="답변"><i class="fas fa-reply"></i><span class="hidden md:inline-block">답변</span></router-link></li>
             <li class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.write_href" title="글쓰기"><i class="fas fa-pencil-alt"></i><span class="hidden md:inline-block"> 글쓰기</span></router-link></li>
             <li v-if="v.update_href" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.update_href"><i class="far fa-edit"></i> <span class="hidden md:inline-block">수정</span></router-link></li>

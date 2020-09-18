@@ -3,7 +3,9 @@
     <gnu-header> </gnu-header>
     <div class="flex flex-col flex-1 dark:bg-gray-700 dark:text-gray-400" style="min-height:100vh">
       <gnu-top> </gnu-top>
-      <router-view ref="body" class="dark:bg-gray-700 dark:text-gray-400" :key="$route.fullPath"></router-view>
+      <transition name="fade" mode="out-in">
+        <router-view ref="body" class="dark:bg-gray-700 dark:text-gray-400" :key="$route.fullPath"></router-view>
+      </transition>
     </div>
     <button style="display:none" id="themeChange" aria-label="Toggle color mode" @click="dark = !dark"> </button>
     <div v-if="$store.state.loading == true" class="fixed z-50 top-0 left-0 w-full h-full justify-center items-center bg-black opacity-50">
@@ -94,4 +96,19 @@ html, body {font-family: "Noto Sans KR", sans-serif !important;}
 #captcha.m_captcha #captcha_key {margin:0;padding:0 5px;width:115px;height:29px;border:1px solid #b8c9c2;background:#f7f7f7;font-size:1.333em;font-weight:bold;text-align:center;line-height:29px;margin-left:3px}
 #captcha.m_captcha #captcha_info {display:block;margin:5px 0 0;font-size:0.95em;letter-spacing:-0.1em}
 #captcha.m_captcha #captcha_mp3 {width:31px;height:31px;vertical-align:top;overflow:hidden;cursor:pointer;text-indent:-9999px;border:none}
+
+.fade-enter-active {
+  animation: fade-in .5s;
+}
+.fade-leave-active {
+  animation: fade-in .5s reverse;
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
 </style>

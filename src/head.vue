@@ -4,7 +4,7 @@
     <router-link class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" to="/">
       {{title}}
     </router-link>
-    <div class="mt-6 menu" >
+    <div class="mt-6 menu">
       <ul v-for="(row, i) in get_menu_db" :key="row.me_id">
         <div class="flex items-center">
           <router-link class="relative px-6 py-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-teal-300 dark:hover:text-gray-200" :to="row.me_link" >
@@ -24,6 +24,9 @@
           </div>
         </ul>
       </ul>
+      <h2 v-if="get_menu_db.length == 0" class="flex justify-center text-xl font-bold text-teal-700 dark:text-gray-400">
+        메뉴 준비중입니다.
+      </h2>
     </div>
   </div>
   <!--

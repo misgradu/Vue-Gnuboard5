@@ -17,7 +17,7 @@ import faq from '@/components/bbs/faq'
 import content from '@/components/content/index'
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) { // 해당 경로에서 또 호출했을떄 에러 처리
-  document.getElementById('nav_menu').classList.add('hidden');
+  document.getElementById('nav_menu').classList.add('hidden');  
   document.getElementById('pip_button').classList.add('hidden');
   return originalPush.call(this, location).catch(err => err)
 };
@@ -42,7 +42,7 @@ export const router = new VueRouter({
     { path: '/bbs/search', name : 'search', component: search },
     { path: '/bbs/register', name : 'regsiter', component: register, props: true },
     { path: '/:bo_table/write/', component: write, name : 'write'},
-    { path: '/:bo_table/:seo/', component: view },
+    { path: '/:bo_table/:seo/', component: view , name : 'view'},
     { path: '/:bo_table', component: list, name : 'list' },
   ]
 })
