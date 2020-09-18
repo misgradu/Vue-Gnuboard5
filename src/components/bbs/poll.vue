@@ -19,7 +19,7 @@
           </div>
         </template>
         <div v-if="result">
-          <div class="border rounded">
+          <div class="border rounded dark:border-gray-600">
             <h2 class="text-center p-3 bg-blue-100 font-bold"> {{result.po_subject}} </h2>
             <div v-for="row in result.list" :key="row.num" class="my-4">
               <h2 class="flex justify-between px-3"> <span> {{row.num}}. {{row.content}} </span> <span> {{row.cnt}}표</span> </h2>
@@ -33,7 +33,20 @@
               </div>
             </div>
           </div>
-          <div class="border mt-4">
+          <article v-for="(row, i) in list2" :key="i" class="border-b py-3">
+            <header class="flex items-center pb-2">
+              <h2 class="flex justify-between w-full"> 
+                <div>
+                  <span class="sound_only">님의 의견 </span>
+                  <div :inner-html.prop="row.name | mb_nick"> </div>
+                  <span class="text-xs text-gray-600 dark:text-gray-300"><i class="fa fa-clock-o"></i> {{row.datetime}}</span>
+                </div>
+                <div class="hover:text-teal-500 dark:text-gray-400 cursor-pointer"> <i class="fa fa-trash-alt"> </i> </div>
+              </h2>
+            </header>
+              <p> {{row.idea}} </p>
+          </article>
+          <div class="border mt-4 dark:border-gray-600">
             <h2 class="p-3 font-bold">
               <t-tag tag-name="span" variant="badge">기타의견</t-tag>
               {{result.po_etc}} 
@@ -47,7 +60,7 @@
           </div>
           <div class="mt-5"> 
             <h2 class="font-bold"> 다른 투표 결과 보기 </h2>
-            <div v-for="row in result.list3" :key="row.po_id" class="my-4 flex justify-between px-3 text-sm border py-3">
+            <div v-for="row in result.list3" :key="row.po_id" class="my-4 flex justify-between px-3 text-sm border py-3 dark:border-gray-600">
               <div> {{row.subject}} </div>
               <div> {{row.date}} </div>
             </div>
@@ -68,6 +81,7 @@ export default {
     return {
       poll : null,
       list : [],
+      list2 : [],
       result : null,
     }
   },
@@ -105,7 +119,9 @@ export default {
         return response.json();
       })
       .then(function(data){
+        console.log(data);
         self.result = data;
+        self.list2 = data.list2;
         self.$refs.poll_result.show();
       });
     }

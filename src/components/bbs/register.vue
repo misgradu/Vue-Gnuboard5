@@ -128,7 +128,9 @@
         </label>
         <t-input-group v-if="r.w == 'none' && r.config.cf_use_recommend==1" class="w-48"> <t-input :value="r.member.mb_id" id="reg_mb_recommend" name="mb_recommend" placeholder="추천인 아이디" type="text"/> </t-input-group>
         <t-input-group label="캡차" >
-          <div ref="captcha" class="flex"> </div>
+          <div ref="captcha" class="flex">
+            <div v-append="cf_captcha_html" v-if="cf_captcha != 'kcaptcha'"> </div>
+          </div>
           <button @click="captcha" type="button"> 캡차 갱신 </button>
         </t-input-group>
       </t-card>
@@ -346,6 +348,7 @@ export default {
           document.title = json.g5.title;
           self.cf_captcha = json.config.cf_captcha;
           self.cf_captcha_text = json.captcha;
+          self.cf_captcha_html = json.captcha_html;
           self.captcha_modify = true;
           self.captcha();
         }
@@ -375,7 +378,7 @@ export default {
           document.title = json.g5.title;
           self.cf_captcha = json.config.cf_captcha;
           self.cf_captcha_text = json.captcha;
-          
+          self.cf_captcha_html = json.captcha_html;
           self.captcha();
           console.log(json);
         });

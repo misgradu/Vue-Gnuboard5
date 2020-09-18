@@ -19,8 +19,8 @@
     <t-modal header="PIP" ref="PIPModal">
       <div v-if="$store.state.youtube">
         <div v-for="(item, i) in $store.state.youtube" :key="i">
-          <t-button variant="success" class="my-1 w-full" @click="$store.commit('PIPChoice', i)">
-          {{item.src}}
+          <t-button variant="success" class="my-1 w-full" @click="$store.commit('PIPChoice', i)" v-if="item.src.indexOf('youtube') != - 1">
+            {{item.src}}          
           </t-button>
         </div>
       </div>
@@ -63,14 +63,14 @@ export default {
 </script>
 
 <style>
-.sv_wrap {display:inline-block;position:relative;font-weight:normal;line-height:20px}
+.sv_wrap {display:inline-block;position:relative;font-weight:normal;line-height:20px;cursor:pointer;}
 .sv_wrap .sv {z-index:1000;width:110px;display:none;margin:5px 0 0;font-size:0.92em;background:#333;text-align:left;white-space:normal;
 -webkit-box-shadow:2px 2px 3px 0px rgba(0,0,0,0.2);
 -moz-box-shadow:2px 2px 3px 0px rgba(0,0,0,0.2);
 box-shadow:2px 2px 3px 0px rgba(0,0,0,0.2)}
 .sv_wrap .sv:before {content:"";position:absolute;top:-6px;left:15px;width:0;height:0;border-style:solid;border-width:0 6px 6px 6px;border-color:transparent transparent #333 transparent}
-.sv_wrap .sv a {display:inline-block;width:110px;margin:0;padding:0 10px;line-height:30px;font-weight:normal;color:#bbb;vertical-align:middle;white-space:nowrap;}
-.sv_wrap .sv a:hover {background:#000;color:#fff}
+.sv_wrap .sv div {display:inline-block;width:110px;margin:0;padding:0 10px;line-height:30px;font-weight:normal;color:#bbb;vertical-align:middle;white-space:nowrap;cursor:pointer;}
+.sv_wrap .sv div:hover {background:#000;color:#fff}
 .sv_wrap .profile_img{float:left;}
 .sv_member {color:#333;font-weight:bold}
 .sv_on {display:block !important;position:fixed;top:23px;left:0px;width:auto;height:auto}

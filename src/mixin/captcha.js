@@ -3,7 +3,7 @@ const captcha = {
     return {
       cf_captcha : null,
       cf_captcha_text : null,
-      captcha_modify : false,
+      cf_captcha_html : false,
     }
   },
   methods: {
@@ -76,6 +76,8 @@ const captcha = {
           this.$refs.captcha.appendChild(sound);  
           this.$refs.captcha.appendChild(input);  
         });
+      }else if(this.cf_captcha != 'kcaptcha' && this.$store.state.isLogin == false || this.captcha_modify == true){
+        //asdf
       }
     },
   },

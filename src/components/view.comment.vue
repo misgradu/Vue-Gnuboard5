@@ -6,7 +6,7 @@
     <!-- 댓글 시작 { -->
     <p v-if="c.list.length == 0" id="bo_vc_empty" class="mx-3 border py-6 rounded bg-white px-3 text-center dark:hover:bg-gray-600 dark:bg-gray-800 dark:border-gray-400">등록된 댓글이 없습니다.</p>
     <section id="bo_vc" v-if="c.list.length > 0 && c.list" class="mx-3" ref="bo_vc">
-      <article :id="'c_'+row.wr_id" class="flex bg-white border rounded-lg mx-4 mt-2" v-for="(row, i) in c.list" :key="row.wr_id" :style="'margin-left:'+row.wr_comment_reply.length * 15">
+      <article :id="'c_'+row.wr_id" class="flex bg-white border rounded-lg mt-2" v-for="(row, i) in c.list" :key="row.wr_id" :style="'margin-left:'+row.wr_comment_reply.length * 15">
         <div class="flex items-start pb-4 w-full">
           <div class="w-full">
             <div class="flex items-center justify-between flex-wrap border-b pb-2 comment-header pt-4 px-4 rounded-t-lg cmt" :data-idx="i" @mouseover="cmtover(i)" @mouseout="cmtout(i)">
@@ -56,7 +56,7 @@
       </article>
     </section>
     <!-- } 댓글 끝 -->
-    <aside id="bo_vc_w" class="flex items-center justify-center mx-3 mb-4">
+    <aside id="bo_vc_w" class="flex items-center justify-center mx-3 mb-4" v-if="c.is_comment_write == true">
       <form name="fviewcomment" ref="fviewcomment" id="fviewcomment" :action="c.comment_action_url" v-on:submit.prevent="fviewcomment_submit" method="post" autocomplete="off" class="w-full my-1">
         <input type="hidden" name="w" value="c" id="w">
         <input type="hidden" name="bo_table" :value="c.bo_table">
@@ -85,7 +85,9 @@
             </div>
             <div class="text-right w-full">
               <div v-if="c.is_guest=='1'">
-                <div ref="captcha" class="flex"> </div>
+                <div ref="captcha" class="flex">
+                  <div v-append="cf_captcha_html" v-if="cf_captcha != 'kcaptcha'"> </div>
+                </div>
               </div>
               <div class="inline-flex items-center mt-3 ml-3">
                   <input type="checkbox" name="wr_secret" value="secret" id="wr_secret" class="selec_chk form-checkbox h-5 w-5 text-blue-600">
@@ -146,6 +148,7 @@ export default {
       var f = this.$refs.fviewcomment;
       let self = this;
       var formData = new FormData(f);
+      // eslint-disable-next-line no-undef
       window.req_api({
         write_comment_token : true,
         bo_table : this.$route.params.bo_table,
@@ -287,6 +290,7 @@ export default {
       console.log(json);
       self.cf_captcha = json.config.cf_captcha;
       self.cf_captcha_text = json.captcha;
+      self.cf_captcha_html = json.captcha_html;
       self.captcha();
     });
     const on = (selector, event, handler, element=document) => {

@@ -9,6 +9,12 @@ import VueAppend from 'vue-append'
 Vue.use(VueAppend)
 Vue.use(Vuex);
 Vue.use(VueTailwind, theme);
+Vue.filter("mb_nick", val => {
+  var value = val;
+  value = value.replace(/<a href=/g, '<div data-href=');
+  value = value.replace(/<\/a>/g, '</div>');
+  return String(value);
+});
 Vue.filter("number_format", val =>{
   return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 });
@@ -35,6 +41,7 @@ const store = new Vuex.Store({
     loading : false,
     pip : false,
     youtube : null,
+    config : null,
   },
   mutations: {
     async Login (state) {

@@ -17,7 +17,7 @@
           <h2 class="hidden">페이지 정보</h2>
           <div class="profile_info flex items-center w-full py-1">
             <div class="profile_info_ct items-center flex w-full">
-              <span class="hidden">작성자</span> <span class="whitespace-no-wrap md:mr-0 mr-3" v-html="view.name"> </span> <span class='text-xs' v-if="view.is_ip_view"> {{$view.ip}} </span>
+              <span class="hidden">작성자</span> <span class="whitespace-no-wrap md:mr-0 mr-3" :inner-html.prop="view.name|mb_nick"> </span> <span class='text-xs' v-if="view.is_ip_view"> {{$view.ip}} </span>
             </div>
             <div class="flex ml-2 w-full justify-end text-xs whitespace-no-wrap flex-wrap">
               <span class="hidden">댓글</span><span class="px-1 text-gray-600 dark:text-gray-400"><a href="#bo_vc"> <i class="far fa-comment-dots"></i> {{view.wr_comment}} 건</a></span>
@@ -167,7 +167,7 @@ import list from "./list";
         self.$store.state.connect = json.connect;
         console.log(self.v);
         if(json.g5_title) document.title = json.g5.title;
-        self.$store.commit('PIPButton', self.view.wr_content);
+        if(json.view) self.$store.commit('PIPButton', self.view.wr_content);
       });
     },
     mounted () {

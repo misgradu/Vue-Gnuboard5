@@ -7,8 +7,9 @@
     <header class="py-3 px-3 flex" v-if="list">
       <div v-for="row in list.category" :key="row.name">
         <h2 class="px-1">
-            <span class="bo_v_cate bg-gray-800 p-2 rounded text-gray-100 cursor-pointer" @click="category">{{row.name}}</span> 
+            <router-link :to="{ name : 'list', params : {bo_table : $route.params.bo_table} , query : {sca : (row.name == '전체' ? '' : row.name) }}" class="bo_v_cate bg-gray-800 p-2 rounded text-gray-100 cursor-pointer">{{row.name}}</router-link> 
             <span class="bo_v_tit">
+              
             </span>
         </h2>
       </div>
@@ -128,7 +129,7 @@
             <i v-if="row.icon_secret" class="ml-1 text-gray-700 dark:text-gray-400 fas fa-lock"></i>
             <span v-if="row.comment_cnt" class="mx-1"> <span class="sound_only">댓글</span><span class="bg-blue-500 text-white text-xs py-1 px-2 rounded">{{row.wr_comment}}</span><span class="sound_only">개</span></span>
           </router-link>
-          <div class="md:flex md:items-center clear-both float-left whitespace-no-wrap truncate md:border-b py-1 pl-2 md:border-r text-gray-600 md:mr-0 mr-2 md:text-gray-700 text-sm md:mr-0 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-400" ref="nickname" v-bind:class="{'bg-blue-100 dark:bg-blue-900' : row.is_notice}" v-html="row.name" 
+          <div class="md:flex md:items-center clear-both float-left whitespace-no-wrap truncate md:border-b py-1 pl-2 md:border-r text-gray-600 md:mr-0 mr-2 md:text-gray-700 text-sm md:mr-0 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-400" ref="nickname" v-bind:class="{'bg-blue-100 dark:bg-blue-900' : row.is_notice}" :inner-html.prop="row.name|mb_nick" 
           @click="layer($refs.nickname, i)"> </div>
           <div class="dark:text-gray-400 md:flex md:items-center md:justify-end float-left md:float-none py-1 pr-2 dark:border-gray-600 md:border-r md:border-b text-right text-gray-600 md:mr-0 mr-2 md:text-gray-700 md:text-sm text-xs" v-bind:class="{'bg-blue-100 dark:bg-blue-900' : row.is_notice}"> <i class="md:hidden far fa-eye"></i> {{row.wr_hit}} </div>
           <div v-if="list.is_good" class="dark:text-gray-400 md:flex md:items-center md:justify-end float-left md:float-none py-1 pr-2 text-right dark:border-gray-600 md:border-r md:border-b text-gray-600 md:mr-0 mr-2 md:text-gray-700 md:text-sm text-xs" v-bind:class="{'bg-blue-100 dark:bg-blue-900' : row.is_notice}"> <i class="md:hidden far fa-thumbs-up"></i> {{row.wr_good}} </div>
@@ -143,7 +144,7 @@
           :per-page="list.perpage"
           :limit="list.limit"
           :disabled="false"
-          v-model="list.page"
+          v-model="$route.query.page"
           @change="pageMove"
         />
       <div class="bo_fx" v-if="list.write_href || list.is_checkbox == true || list.list_href">
@@ -178,9 +179,18 @@ export default {
       ao : {
         list : null,
       }, //admin_order
+      params : '',
     }
   },
-  methods : {
+  methods : {    
+    queryString () {
+      var data = this.$route.query;
+      var params = '?';
+      for (const [key, value] of Object.entries(data)) {
+        params += '&' + key + '=' + value;
+      }
+      return params;
+    },
     layer (id, i) {
       var layer = id[i];
       var pos = layer.getBoundingClientRect();
@@ -302,7 +312,7 @@ export default {
       var sfl = document.getElementById('sfl').value;
       var stx = document.getElementById('stx').value;
       window.req_api({
-        url : "?sca=&sop=and&sfl" + sfl + "&stx="+stx,
+        url : "?sca=&sop=and&sfl=" + sfl + "&stx="+stx,
         list : true,
         bo_table : this.$route.params.bo_table,
       }).then(function(json){
@@ -324,61 +334,10 @@ export default {
       })
     },
     pageMove (page) {
-      this.colspan = 5;
-      this.col = ["2.5rem", "auto", "8rem", "4rem", "4rem"];
-      let self = this;
-      if(self.$store.state.loading == false) {
-        setTimeout(() => {
-          if(self.$store.state.loading == false) self.$store.state.loading = false;
-        }, 1000);
-        window.req_api({
-          url : "?page="+parseInt(page)+"&sop=and&sfl" + this.sfl + "&stx="+ this.stx + '&sca='+this.sca,
-          list : true,
-          bo_table : this.$route.params.bo_table,
-        }).then(function(json){
-          self.$store.state.loading = false;
-          self.list = json;
-          if(self.list.is_checkbox == true) self.colspan++;
-          if(self.list.is_good == true) self.colspan++;
-          if(self.list.is_nogood == true) self.colspan++;
-          self.grid = 'grid-cols-' + self.colspan;
-          if(self.list.is_checkbox == true) self.col.splice(0,0,['2rem']);
-          if(self.list.is_good == true) self.col.push('4rem');
-          if(self.list.is_nogood == true) self.col.push('4rem');
-          self.colwidth = self.col.join(' ');
-          document.title = json.title;
-          self.$store.state.connect = json.connect;
-        })
-      }
-    },
-    category (e){
-      this.colspan = 5;
-      this.col = ["2.5rem", "auto", "8rem", "4rem", "4rem"];
-      let self = this;
-      let cate = e.target.innerText;
-      if(cate == '전체'){
-        cate = '';
-      }
-      window.req_api({
-        url : "?sca="+cate,
-        list : true,
-        bo_table : this.$route.params.bo_table,
-      }).then(function(json){
-        self.list = json;
-        if(self.list.is_checkbox == true) self.colspan++;
-        if(self.list.is_good == true) self.colspan++;
-        if(self.list.is_nogood == true) self.colspan++;
-        self.grid = 'grid-cols-' + self.colspan;
-        if(self.list.is_checkbox == true) self.col.splice(0,0,['2rem']);
-        if(self.list.is_good == true) self.col.push('4rem');
-        if(self.list.is_nogood == true) self.col.push('4rem');
-        self.colwidth = self.col.join(' ');
-        document.title = json.title;
-        self.$store.state.connect = json.connect;
-        self.sfl = '';
-        self.stx = '';
-        self.sca = cate;
-      })
+      this.$route.query.page = page;
+      console.log('route', this.$route.params.bo_table, this.$route.query);
+      this.update();
+      this.$router.push({ name : 'list' , params : this.$route.params.bo_table, query : this.$route.query})
     },
     chkall () {
       const all_chk = this.$refs.chkall[0].checked;
@@ -398,6 +357,7 @@ export default {
       this.col = ["2.5rem", "auto", "8rem", "4rem", "4rem"];
       let self = this;
       window.req_api({
+        url : this.queryString(),
         list : true,
         bo_table : this.$route.params.bo_table,
       }).then(function(json){
@@ -417,30 +377,12 @@ export default {
     }
   },
   created () {
-    let self = this;
-    window.req_api({
-      list : true,
-      bo_table : this.$route.params.bo_table,
-    }).then(function(json){
-      if(json.msg){
-        alert(json.msg);
-        self.$router.push('/');
-      }
-      self.list = json;
-      if(self.list.is_checkbox == true) self.colspan++;
-      if(self.list.is_good == true) self.colspan++;
-      if(self.list.is_nogood == true) self.colspan++;
-      self.grid = 'grid-cols-' + self.colspan;
-      if(self.list.is_checkbox == true) self.col.splice(0,0,['2rem']);
-      if(self.list.is_good == true) self.col.push('4rem');
-      if(self.list.is_nogood == true) self.col.push('4rem');
-      self.colwidth = self.col.join(' ');
-      if(!json.title) document.title = '잘못 된 접근입니다.';
-      else document.title = json.title;
-      self.$store.state.connect = json.connect;
-    });
+    if(!this.$route.query.page) this.$route.query.page = 1;
+    this.update();
   },
+  /*
   beforeRouteUpdate (to, from, next) {
+    console.log('route2');
     let self = this;
     this.colspan = 5;
     this.col = ["2.5rem", "auto", "8rem", "4rem", "4rem"];
@@ -467,6 +409,7 @@ export default {
       next();
     })
   },
+  */
 }
 </script>
 

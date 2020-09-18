@@ -43,6 +43,6 @@ export const router = new VueRouter({
     { path: '/bbs/register', name : 'regsiter', component: register, props: true },
     { path: '/:bo_table/write/', component: write, name : 'write'},
     { path: '/:bo_table/:seo/', component: view },
-    { path: '/:bo_table', component: list },
+    { path: '/:bo_table', component: list, name : 'list' },
   ]
 })

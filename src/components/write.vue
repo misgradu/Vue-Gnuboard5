@@ -92,8 +92,10 @@
           <input type="checkbox" :id="'bf_file_del'+i" :name="'bf_file_del['+i+']'" value="1"> <label :for="'bf_file_del'+i">  파일 삭제</label>
         </span>
       </div>
-      <div v-if="v.is_use_captcha=='1'">
-        <div ref="captcha" class="flex"> </div>
+      <div v-if="v.is_guest=='1'">
+        <div ref="captcha" class="flex">
+          <div v-append="cf_captcha_html" v-if="cf_captcha != 'kcaptcha'"> </div>
+        </div>
       </div>
       <div class="btn_confirm float-right text-right clearfix w-full px-3 text-sm">
         <router-link v-if="v.cancel_url" :to="v.cancel_url" class="inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mx-2">취소</router-link>
@@ -193,6 +195,9 @@ export default {
       self.cf_captcha_text = json.captcha;
       self.$store.state.connect = json.connect;
       document.title = json.title;
+      self.cf_captcha = json.config.cf_captcha;
+      self.cf_captcha_text = json.captcha;
+      self.cf_captcha_html = json.captcha_html;
       self.captcha();
     });
   },
