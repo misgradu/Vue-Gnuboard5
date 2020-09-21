@@ -11,7 +11,7 @@
       </div>
     </div>
     <div v-else>
-      <div class="p-5 text-center shadow bg-white"> 접속자가 없습니다 </div>
+      <div class="p-5 text-center shadow bg-white dark:bg-gray-900 border dark:border-gray-600"> 접속자가 없습니다 </div>
     </div>
   </div>
 </template>

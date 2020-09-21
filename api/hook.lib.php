@@ -163,4 +163,45 @@ function Vue_memo_form_update_after($member_list, $str_nick_list, $redirect_url,
 function Vue_memo_form_update_failed($member_list, $str_nick_list, $redirect_url, $me_memo) {
   alert("회원아이디 오류 같습니다.", $redirect_url, false);
 }
+function Vue_subject_sort_link($col, $query_string='', $flag='asc')
+{
+    global $sst, $sod, $sfl, $stx, $page, $sca;
+    $q1 = "sst=$col";
+    if ($flag == 'asc')
+    {
+        $q2 = 'sod=asc';
+        if ($sst == $col)
+        {
+            if ($sod == 'asc')
+            {
+                $q2 = 'sod=desc';
+            }
+        }
+    }
+    else
+    {
+        $q2 = 'sod=desc';
+        if ($sst == $col)
+        {
+            if ($sod == 'desc')
+            {
+                $q2 = 'sod=asc';
+            }
+        }
+    }
+    $arr_query = array();
+    $arr_query[] = $query_string;
+    $arr_query[] = $q1;
+    $arr_query[] = $q2;
+    $arr_query[] = 'sfl='.$sfl;
+    $arr_query[] = 'stx='.$stx;
+    $arr_query[] = 'sca='.$sca;
+    $arr_query[] = 'page='.$page;
+    $qstr = implode("&amp;", $arr_query);
+    $qstr = G5_BBS_URL.'/board.php?'.$qstr;
+    $qstr = short_url_clean($qstr);
+    $qstr = str_replace('&amp;', '&', $qstr);
+    $qstr = str_replace(G5_URL, '', $qstr);
+    return $qstr;
+}
 ?>

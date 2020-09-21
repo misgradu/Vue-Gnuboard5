@@ -16,10 +16,12 @@ $wr_id_list = '';
 if ($wr_id)
     $wr_id_list = $wr_id;
 else {
-    $comma = '';
-    for ($i=0; $i<count($_POST['chk_wr_id']); $i++) {
-        $wr_id_list .= $comma . $_POST['chk_wr_id'][$i];
-        $comma = ',';
+    if($_POST['chk_wr_id']) {
+        $comma = '';
+        for ($i=0; $i<count($_POST['chk_wr_id']); $i++) {
+            $wr_id_list .= $comma . $_POST['chk_wr_id'][$i];
+            $comma = ',';
+        }
     }
 }
 

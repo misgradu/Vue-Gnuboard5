@@ -3,6 +3,43 @@
     <t-alert variant="danger" show v-if="v.msg" :dismissible="false">
       {{v.msg}}
     </t-alert>
+    <t-modal name="sw_modal">
+      <template v-slot:header>
+        <div> {{ao.sw == 'copy' ? '게시물 복사' : '게시물 이동'}} </div>
+      </template>
+      <form name="fboardmoveall" ref="fboardmoveall" method="post" @submit.prevent="move_update" v-if="v.view">
+        <input type="hidden" name="sw" :value="ao.sw">
+        <input type="hidden" name="bo_table" :value="$route.params.bo_table">
+        <input type="hidden" name="wr_id_list" :value="view.wr_id">
+        <input type="hidden" name="sfl" :value="$route.query.sfl">
+        <input type="hidden" name="stx" :value="$route.query.stx">
+        <input type="hidden" name="spt" :value="$route.query.spt">
+        <input type="hidden" name="sst" :value="$route.query.sst">
+        <input type="hidden" name="sod" :value="$route.query.sod">
+        <input type="hidden" name="page" :value="$route.query.page">
+        <input type="hidden" name="act" :value="$route.query.act">
+        <!--<input type="hidden" name="url" :value="document.referrer">-->
+        <div class="border-b text-center text-xl font-bold py-2">  게시판 </div>
+        <div class="flex py-3 border-b justify-between px-3 items-center" v-for="(row, i) in ao.list" :key="i" v-bind:class="{'bg-gray-100' : row.bo_table == $route.params.bo_table}"> <!-- $route.params.bo_table -->
+          <div class="items-center flex">
+            <div class="inline-flex items-center justify-center mr-4">
+              <input type="checkbox" name="chk_bo_table[]" :value="row.bo_table" class="form-checkbox h-5 w-5 text-blue-600">
+                <b class="sound_only">현재 페이지 게시물  전체선택</b>
+            </div>
+            {{row.gr_subject}} > {{row.bo_subject}} ({{row.bo_table}}) 
+          </div>
+          <div>
+            {{row.bo_table == $route.params.bo_table ? '현재' : ''}}
+          </div>
+        </div>
+      </form>
+      <template v-slot:footer>
+        <div class="flex justify-around">
+          <t-button variant="primary" type="submit" class="w-1/4" @click="move_update"> 복사 </t-button>
+          <t-button  class="w-1/4" type="button" @click="$modal.hide('sw_modal')"> 창 닫기 </t-button>
+        </div>
+      </template>
+    </t-modal>
     <article id="bo_v" class="w-full dark:bg-gray-700 h-full dark:text-gray-400" v-if="v.view">
       <section class="mx-3 border bg-white mb-3 px-3 rounded dark:bg-gray-900 dark:text-gray-400 dark:border-gray-400">
         <header class="py-3 border-b dark:border-gray-400">
@@ -32,8 +69,8 @@
             <li class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.write_href" title="글쓰기"><i class="fas fa-pencil-alt"></i><span class="hidden md:inline-block"> 글쓰기</span></router-link></li>
             <li v-if="v.update_href" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><router-link :to="v.update_href"><i class="far fa-edit"></i> <span class="hidden md:inline-block">수정</span></router-link></li>
             <li v-if="v.delete_href" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><a :href="v.delete_href" v-on:click.prevent.stop="del(v.delete_href)"><i class="fa fa-trash-alt"></i> <span class="hidden md:inline-block">삭제</span></a></li>
-            <li v-if="v.copy_href" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><a :href="v.copy_href" onclick="board_move(this.href); return false;"><i class="far fa-copy"></i> <span class="hidden md:inline-block">복사</span></a></li>
-            <li v-if="v.move_href" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><a :href="v.move_href" onclick="board_move(this.href); return false;"><i class="fas fa-arrows-alt"></i> <span class="hidden md:inline-block">이동</span></a></li>
+            <li v-if="v.copy_href" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><a class="cursor-pointer" @click="board_move('copy');"><i class="far fa-copy"></i> <span class="hidden md:inline-block">복사</span></a></li>
+            <li v-if="v.move_href" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><a class="cursor-pointer" @click="board_move('move');"><i class="fas fa-arrows-alt"></i> <span class="hidden md:inline-block">이동</span></a></li>
             <li v-if="v.search_href" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:border-gray-400 dark:hover:bg-gray-600 mx-1 md:mx-2 rounded hover:bg-gray-400"><a :href="v.search_href"><i class="fas fa-search"></i> <span class="hidden md:inline-block">검색</span></a></li>
         </ul>
         <t-modal ref="scrap">
@@ -145,6 +182,9 @@ import list from "./list";
       return {
         view : null,
         v : {},
+        ao : {
+          list : null,
+        }, //admin_order
       }
     },
     created () {
@@ -173,6 +213,64 @@ import list from "./list";
     mounted () {
     },
     methods : {
+      board_move(order) {
+        this.$modal.show('sw_modal');
+        let self = this;
+        //const f = this.$refs.fboardlist;
+        var formData = new FormData();
+        formData.append('board_list_update', true);
+        formData.append('sfl', this.$route.query.sfl);
+        formData.append('stx', this.$route.query.stx);
+        formData.append('spt', this.$route.query.spt);
+        formData.append('sst', this.$route.query.sst);
+        formData.append('sod', this.$route.query.sod);
+        formData.append('page', this.$route.query.page);
+        formData.append('act', this.$route.query.act);
+        formData.append('url', this.$route.query.url);
+        if(order == 'copy') {
+          formData.append('btn_submit', '선택복사');
+          formData.append('sw', 'copy');
+        }
+        else if(order=='move') {
+          formData.append('btn_submit', '선택이동');
+          formData.append('sw', 'move');
+        }
+        fetch(window.url, {
+          method: "post",
+          body: formData,
+        })
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data){
+          if(data.msg) {
+            alert(data.msg);
+          }
+          console.log(data);
+          self.ao = data;
+          self.$modal.show('sw_modal');
+        });
+      },
+      move_update () {
+        let self = this;
+        const f = this.$refs.fboardmoveall;
+        var formData = new FormData(f);
+        formData.append('move_update', true);
+        fetch(window.url, {
+          method: "post",
+          body: formData,
+        })
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data){
+          if(data.msg) {
+            alert(data.msg);
+          }
+          self.$modal.hide('sw_modal');
+          self.update();
+        });
+      },    
       update () {
         let self = this;
         window.req_api({

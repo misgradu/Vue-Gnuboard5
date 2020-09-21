@@ -1,6 +1,6 @@
 const latest = {
   methods: {
-    latest(bo_table, rows, subject_len) {
+    async latest(bo_table, rows, subject_len) {
       let formData = new FormData();
       formData.append("latest", true);
       formData.append("bo_table", bo_table);

@@ -86,10 +86,9 @@ export default {
       list : [],
     }
   },
-  created () {
-    this.latest('free','10','40').then((rows) => this.list.push(rows))
-    this.latest('notice','10','40').then((rows) => this.list.push(rows))
-    console.log(this.list);
+  async created () {
+    await this.latest('free','10','40').then((rows) => this.list.push(rows))
+    await this.latest('notice','10','40').then((rows) => this.list.push(rows))
   }
 }
 </script>

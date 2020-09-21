@@ -71,14 +71,14 @@
         <h2 class="px-4 pb-2 text-gray-800 text-sm sound_only">댓글쓰기</h2>
         <span class="sound_only">내용</span>
         <strong id="char_cnt" v-if="c.comment_min || c.comment_max"><span id="char_count"></span>글자</strong>
-        <textarea id="wr_content" name="wr_content" ref="wr_content" maxlength="10000" required class="dark:bg-gray-600 dark:border-gray-400 bg-white rounded border-2 leading-tight appearance-none border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 mt-3 font-medium placeholder-gray-700 focus:outline-none focus:border-gray-500" title="내용" placeholder="댓글내용을 입력해주세요"></textarea>
+        <textarea id="wr_content" name="wr_content" ref="wr_content" maxlength="10000" required class="dark:bg-gray-800 dark:focus:bg-gray-700 dark:border-gray-400 bg-white rounded border-2 leading-tight appearance-none border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 mt-3 font-medium placeholder-gray-700 dark:placeholder-gray-300 focus:outline-none focus:border-gray-500" title="내용" placeholder="댓글내용을 입력해주세요"></textarea>
         <div class="flex flex-wrap mb-6">
             <div class="bo_vc_w_info flex">
               <div v-if="c.is_guest">
                 <label for="wr_name" class="sound_only">이름<strong> 필수</strong></label>
-                <input type="text" name="wr_name" :value="c.ck_sns_name" id="wr_name" required class="mr-3 sm:w-auto w-1/2 bg-gray-100 rounded border border-gray-400 leading-normal resize-none py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white" size="25" placeholder="이름">
+                <input type="text" name="wr_name" :value="c.ck_sns_name" id="wr_name" required class="mr-3 sm:w-auto w-1/2 bg-gray-100 rounded border border-gray-400 leading-normal resize-none py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white dark:focus:bg-gray-700 dark:bg-gray-800" size="25" placeholder="이름">
                 <label for="wr_password" class="sound_only">비밀번호<strong> 필수</strong></label>
-                <input type="password" name="wr_password" id="wr_password" required class="sm:w-auto w-1/2 bg-gray-100 rounded border border-gray-400 leading-normal resize-none py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white" size="25" placeholder="비밀번호">
+                <input type="password" name="wr_password" id="wr_password" required class="sm:w-auto w-1/2 bg-gray-100 rounded border dark:focus:bg-gray-700 dark:bg-gray-800 border-gray-400 leading-normal resize-none py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white" size="25" placeholder="비밀번호">
               </div>
               <span v-if="v.board.bo_use_sns && v.config.cf_fackbook_appid && v.config.cf_twitter_key" class="sound_only">SNS 동시등록</span>
               <span v-if="v.board.bo_use_sns && v.config.cf_fackbook_appid && v.config.cf_twitter_key" id="bo_vc_send_sns"></span>

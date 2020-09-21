@@ -248,6 +248,10 @@ if ($board['bo_use_rss_view']) {
 $data['perpage'] = 1;
 $data['limit'] = 5;
 $total_count = (int)$total_count;
+$sort_wr_hit = Vue_subject_sort_link('wr_hit', $qstr2, 1);
+$sort_wr_good = Vue_subject_sort_link('wr_good', $qstr2, 1);
+$sort_wr_nogood = Vue_subject_sort_link('wr_nogood', $qstr2, 1);
+$sort_wr_datetime = Vue_subject_sort_link('wr_datetime', $qstr2, 1);
 $arr = get_defined_vars();
 foreach ( $arr as $key => $value ) {
   $data[$key] = $value;

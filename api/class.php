@@ -239,10 +239,11 @@ class Vue {
       include_once('./board/board_common.php');
       @extract($_POST);
       add_event('bbs_delete_all', 'delete_all',10,2); 
-      $count = count($_POST['chk_wr_id']);
+      $count = $_POST['chk_wr_id'] ? count($_POST['chk_wr_id']) : 1;
       if(!$count) {
         alert($_POST['btn_submit'].' 하실 항목을 하나 이상 선택하세요.');
       }
+      if ($wr_id) $wr_id_list = $wr_id;
       if($_POST['btn_submit'] == '선택삭제') {
         include G5_BBS_PATH.'/delete_all.php';
       } else if($_POST['btn_submit'] == '선택복사') {  

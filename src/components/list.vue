@@ -110,10 +110,18 @@
           <div v-if="i==0" class="hidden md:block py-2 dark:border-gray-600 border-r border-b whitespace-no-wrap text-center">번호</div>
           <div v-if="i==0" class="hidden md:block py-2 dark:border-gray-600 border-r border-b pl-2">제목</div>
           <div v-if="i==0" class="hidden md:block py-2 dark:border-gray-600 border-r border-b pl-2 text-center">글쓴이</div>
-          <div v-if="i==0" class="hidden md:block py-2 dark:border-gray-600 border-r border-b text-center"> 조회 </div>
-          <div v-if="list.is_good && i==0" class="hidden md:block py-2 dark:border-gray-600 border-r border-b text-center"> 추천 </div>
-          <div v-if="list.is_nogood && i==0" class="hidden md:block py-2 dark:border-gray-600 border-r border-b text-center"> 비추천 </div>
-          <div v-if="i==0" class="hidden md:block py-2 border-b text-center dark:border-gray-600">날짜 </div>
+          <div v-if="i==0" class="hidden md:block py-2 dark:border-gray-600 border-r border-b text-center"> 
+            <router-link :to="list.sort_wr_hit"> 조회 </router-link>
+          </div>
+          <div v-if="list.is_good && i==0" class="hidden md:block py-2 dark:border-gray-600 border-r border-b text-center"> 
+            <router-link :to="list.sort_wr_good"> 추천 </router-link>
+          </div>
+          <div v-if="list.is_nogood && i==0" class="hidden md:block py-2 dark:border-gray-600 border-r border-b text-center"> 
+            <router-link :to="list.sort_wr_nogood"> 비추천 </router-link>
+          </div>
+          <div v-if="i==0" class="hidden md:block py-2 border-b text-center dark:border-gray-600">
+            <router-link :to="list.sort_wr_datetime">날짜  </router-link>
+          </div>
           <div v-if="list.is_checkbox == true" class="dark:border-gray-600 float-right absolute md:relative md:float-none md:inline-flex items-center md:py-0 py-1 md:px-0 px-1 md:border-b md:border-r justify-center py-2 md:py-0" v-bind:class="{'bg-blue-100 dark:bg-blue-900' : row.is_notice}">
               <input type="checkbox" name="chk_wr_id[]" :value="row.wr_id" :id="'chk_wr_id_'+i" class="selec_chk form-checkbox h-5 w-5 text-blue-600 mt-1 md:mt-0">
               <b class="sound_only">현재 페이지 게시물  전체선택</b>
@@ -137,7 +145,7 @@
           <div class="dark:text-gray-400 md:flex md:items-center md:justify-end md:float-none float-right py-1 pl-1 text-sm md:border-b text-right pr-2 whitespace-no-wrap text-gray-600 md:mr-0 md:text-gray-700 dark:border-gray-600 " v-bind:class="{'bg-blue-100 dark:bg-blue-900' : row.is_notice}"> {{row.datetime2}} </div>
           <div class="dark:text-gray-400 md:flex md:items-center md:justify-end md:hidden clearfix border-b border-t w-full -mt-px dark:border-gray-600 " v-bind:class="{'bg-blue-100 dark:bg-blue-900' : row.is_notice}"></div>
         </div>
-        <div class="rounded mx-3 flex justify-center shadow p-3 bg-white dark:bg-gray-700 dark:text-gray-400" v-if="typeof list.list != 'number' && list.list.length == 0"> 게시물이 없습니다.</div>
+        <div class="rounded mx-3 flex justify-center shadow p-3 bg-white dark:bg-gray-900 dark:text-gray-400 border dark:border-gray-500" v-if="typeof list.list != 'number' && list.list.length == 0"> 게시물이 없습니다.</div>
       </div>
         <t-pagination v-if="$route.query.page"
           :total-items="list.total_page"
