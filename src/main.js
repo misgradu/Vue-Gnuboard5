@@ -5,7 +5,7 @@ import App from './App.vue'
 import theme from './theme'
 import { router } from "./router"
 import VueTailwind from 'vue-tailwind'
-import VueAppend from 'vue-append'
+import VueAppend from './mixin/vue-append'
 Vue.use(VueAppend)
 Vue.use(Vuex);
 Vue.use(VueTailwind, theme);
