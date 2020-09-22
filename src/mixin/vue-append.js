@@ -77,6 +77,7 @@
     const execute = async function () {
       var script = scripts[Idx];
       let s = document.createElement('script');
+      if(typeof script == "undefined") return false;
       if(script.src) {
         s.setAttribute('src', script.src);
         s.onload = function() {

@@ -6,13 +6,18 @@ import theme from './theme'
 import { router } from "./router"
 import VueTailwind from 'vue-tailwind'
 import VueAppend from './mixin/vue-append'
+import Common from './mixin/common'
 Vue.use(VueAppend)
 Vue.use(Vuex);
+Vue.use(Common, router);
 Vue.use(VueTailwind, theme);
 Vue.filter("mb_nick", val => {
   var value = val;
   value = value.replace(/<a href=/g, '<div data-href=');
   value = value.replace(/<\/a>/g, '</div>');
+  value = value.replace(/onclick/g, 'data-type').trim(0);
+  value = value.replace(/\(this.href\);/g, '').trim();
+  value = value.replace(/return false;/g, '').trim();
   return String(value);
 });
 Vue.filter("number_format", val =>{
