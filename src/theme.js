@@ -1,6 +1,6 @@
 const theme = {
   TInput: {
-    classes: 'bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full leading-normal dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600',
+    classes: 'bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full leading-normal dark:bg-gray-900 dark:text-gray-400 dark:border-gray-600',
     variants: {
       error: 'text-red-600 bg-red-100 focus:outline-none focus:shadow-outline border border-red-300 rounded py-2 px-4 block w-full leading-normal placeholder-red-300',
       success: 'text-green-600 bg-green-100 focus:outline-none focus:shadow-outline border border-green-300 rounded py-2 px-4 block w-full leading-normal placeholder-green-300',
@@ -43,7 +43,7 @@ const theme = {
     fixedClasses:
       "focus:outline-none focus:shadow-outline items-center transition ease-in-out duration-150 ",
     classes:
-      "hover:bg-gray-200 focus:border-gray-200 active:bg-gray-200 text-sm font-medium border border-transparent px-3 py-2 rounded-md bg-white border border-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-500",
+      "dark:hover:bg-gray-600 hover:bg-gray-200 focus:border-gray-200 active:bg-gray-200 text-sm font-medium border border-transparent px-3 py-2 rounded-md bg-white border border-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-500",
     variants: {
       primary:
         "text-white bg-blue-600 hover:bg-blue-500 focus:border-blue-700 active:bg-blue-700 text-sm font-medium border border-transparent px-3 py-2 rounded-md",
@@ -219,7 +219,7 @@ const theme = {
     },
     variants: {
       danger: {
-        wrapper: "bg-red-100 border-red-500",
+        wrapper: "bg-red-100 border-red-500 dark:bg-red-300 dark:border-red-600",
         body: "text-red-700",
         close: "text-red-700 hover:text-red-500 hover:bg-red-200",
       },
@@ -259,7 +259,7 @@ const theme = {
       body: "p-4",
       header: "p-4  text-sm font-semibold uppercase text-gray-700 dark:text-gray-400",
       footer: "p-4 text-sm font-semibold uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400",
-      close: "absolute right-0 top-0 m-3 text-gray-700 hover:text-gray-600 dark:bg-gray-600 dark:text-gray-400 dark:hover:text-gray-200",
+      close: "absolute right-0 top-0 m-3 text-gray-700 hover:text-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:hover:text-gray-200",
       closeIcon: "h-5 w-5 fill-current",
     },
     classes: {
@@ -291,10 +291,10 @@ const theme = {
   TTable: {
     classes: {
       table: "shadow min-w-full divide-y divide-gray-200 dark:divide-gray-400 border dark:border-gray-400",
-      tbody: "bg-white divide-y divide-gray-200 dark:divide-gray-400 dark:bg-gray-600 dark:text-gray-300",
-      td: "px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-700",
+      tbody: "bg-white divide-y divide-gray-200 dark:divide-gray-400 dark:bg-gray-700 dark:text-gray-300",
+      td: "px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-700 dark:text-gray-400",
       theadTh:
-        "px-6 py-3 border-b border-gray-200 dark:border-gray-400 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider dark:bg-gray-600 dark:text-gray-300",
+        "px-6 py-3 border-b border-gray-200 dark:border-gray-400 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider dark:bg-gray-700 dark:text-gray-300",
     },
     variants: {
       thin: {
@@ -306,13 +306,13 @@ const theme = {
   },
   TPagination: {
     classes: {
-      wrapper: "table border-collapse text-center bg-white mx-auto mt-2 dark:text-gray-200 dark:bg-gray-900",
+      wrapper: "select-none table border-collapse text-center bg-white mx-auto mt-2 dark:text-gray-400 dark:bg-gray-900",
       element: "w-8 h-8 border table-cell dark:border-gray-400",
       disabledElement: "w-8 h-8 border dark:border-gray-500 table-cell",
       ellipsisElement: "w-8 h-8 border dark:border-gray-500 hidden md:table-cell",
-      activeButton: "bg-gray-300 dark:bg-gray-600 w-full h-full",
+      activeButton: "bg-gray-300 dark:bg-gray-800 w-full h-full",
       disabledButton: "opacity-25 dark:border-gray-600 w-full h-full cursor-not-allowed",
-      button: "hover:bg-gray-200 dark:hover:bg-gray-500 w-full h-full",
+      button: "hover:bg-gray-200 dark:hover:bg-gray-800 w-full h-full",
       ellipsis: "",
     },
     variants: {

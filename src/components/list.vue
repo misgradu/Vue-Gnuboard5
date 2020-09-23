@@ -7,10 +7,8 @@
     <header class="py-3 px-3 flex" v-if="list">
       <div v-for="row in list.category" :key="row.name">
         <h2 class="px-1">
-            <router-link :to="{ name : 'list', params : {bo_table : $route.params.bo_table} , query : {sca : (row.name == '전체' ? '' : row.name) }}" class="bo_v_cate bg-gray-800 p-2 rounded text-gray-100 cursor-pointer">{{row.name}}</router-link> 
-            <span class="bo_v_tit">
-              
-            </span>
+          <router-link :to="{ name : 'list', params : {bo_table : $route.params.bo_table} , query : {sca : (row.name == '전체' ? '' : row.name) }}" class="bo_v_cate bg-gray-800 p-2 rounded text-gray-100 cursor-pointer">{{row.name}}</router-link> 
+          <span class="bo_v_tit"> </span>
         </h2>
       </div>
     </header>
@@ -101,7 +99,7 @@
         <button class="absolute right-0 top-0 py-2 px-3 border-l my-1"> <i class="fa fa-search" @keyup.enter="search" @click="search"> </i> </button>
         </div>
       </t-modal>
-      <div class="my-4 rounded" v-if="list">
+      <div class="my-4 rounded select-none" v-if="list && list.board.bo_skin.indexOf('gallery') == -1">
         <div v-for="(row, i) in list.list" :key="row.wr_id" class="border-t border-r border-l -my-px mx-3 bg-white block md:grid gap-0 v-list dark:bg-gray-900 dark:border-gray-600 dark:text-gray-400" v-bind:class="[grid]" :style="{gridTemplateColumns : colwidth}">
           <div v-if="list.is_checkbox == true && i==0" class="hidden md:inline-flex items-center dark:border-gray-600 border-b border-r justify-center">
             <input type="checkbox" id="chkall" class="form-checkbox h-5 w-5 text-blue-600"  ref="chkall" @click="chkall">
@@ -127,7 +125,7 @@
               <b class="sound_only">현재 페이지 게시물  전체선택</b>
           </div>
           <div class="hidden md:block md:float-none text-center md:h-auto py-2 dark:border-gray-600 md:border-r md:border-b text-gray-700 text-sm dark:text-gray-400" v-bind:class="{'bg-blue-100 dark:bg-blue-900' : row.is_notice}"> {{row.num}} <span v-if="row.is_notice"> {{row.ca_name}} </span> </div>
-          <router-link :to=row.href class="float-left md:float-none md:inline-block hover:bg-gray-200 dark:hover:bg-gray-500 py-2 pl-2 dark:border-gray-600 md:border-r md:border-b whitespace-no-wrap truncate w-full" v-bind:class="{'bg-blue-100 dark:bg-blue-900' : row.is_notice, 'pl-8 md:pl-2' : list.is_checkbox}">
+          <router-link :to="row.href" class="float-left md:float-none md:inline-block hover:bg-gray-200 dark:hover:bg-gray-700 py-2 pl-2 dark:border-gray-600 md:border-r md:border-b whitespace-no-wrap truncate w-full" v-bind:class="{'bg-blue-100 dark:bg-blue-900' : row.is_notice, 'pl-8 md:pl-2' : list.is_checkbox}">
             <span v-if="row.ca_name" class="bo_v_cate bg-gray-800 inline-block p-1 dark:border-gray-600 dark:bg-gray-600 text-xs justify-center rounded text-gray-100"> {{row.ca_name}} </span>
             {{row.wr_subject}} 
             <span v-if="row.icon_new" class="bg-green-400 px-2 py-1 rounded text-white text-xs">N</span>
@@ -147,6 +145,11 @@
         </div>
         <div class="rounded mx-3 flex justify-center shadow p-3 bg-white dark:bg-gray-900 dark:text-gray-400 border dark:border-gray-500" v-if="typeof list.list != 'number' && list.list.length == 0"> 게시물이 없습니다.</div>
       </div>
+      <Gallery v-else-if="list" 
+      v-bind:list="list.list" 
+      v-bind:g="list"
+      class="my-4 rounded select-none">
+      </Gallery>
         <t-pagination v-if="$route.query.page"
           :total-items="list.total_page"
           :per-page="list.perpage"
@@ -168,12 +171,19 @@
 </template>
 
 <script>
+import gellery from './gallery'
 export default {
   name: 'list',
+  components : {
+    'Gallery' : gellery,
+  },
   data () {
     var colspan = 5;
     return {
       list : {
+        board : {
+          bo_skin : 'basic'
+        },
         msg : null,
         list : 0,
       },

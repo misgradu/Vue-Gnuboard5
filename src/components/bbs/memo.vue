@@ -54,11 +54,11 @@
         </template>
         <form name="fmemoform" ref="fmemoform" @submit.prevent="fmemoform_submit" method="post" autocomplete="off">
           <label for="me_recv_mb_id" class="sound_only">받는 회원아이디<strong>필수</strong></label>
-          <t-input name="me_recv_mb_id" class="mb-3" id="me_recv_mb_id" required size="47" placeholder="받는 회원아이디" />
+          <t-input name="me_recv_mb_id" class="mb-3" id="me_recv_mb_id" required size="47" :value="$route.query.me_recv_mb_id ? $route.query.me_recv_mb_id : ''" placeholder="받는 회원아이디" />
           <p class="text-xs text-gray-500">여러 회원에게 보낼때는 컴마(,)로 구분하세요.</p>
           <p class="text-xs text-gray-500"  v-if="m.config.cf_memo_send_point">쪽지 보낼때 회원당 {{m.config.cf_memo_send_point}}점의 포인트를 차감합니다.</p>
           <label for="me_memo" class="sound_only">내용</label>
-          <t-textarea v-model="m.content" class="w-full h-20 p-2 border rounded my-3" name="me_memo" id="me_memo" required />
+          <t-textarea v-model="m.content" class="w-full h-20 p-2 border rounded my-3 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-400" name="me_memo" id="me_memo" required />
           <span class="sound_only">자동등록방지</span>
           <div ref="captcha" class="flex mb-3"> </div>
           <t-button type="submit" variant="primary" id="btn_submit" class="btn btn_b02 reply_btn">보내기</t-button>
@@ -87,7 +87,11 @@ export default {
   methods : {
     page (page) {
       page = page ? page : 1;
-      this.$router.push({name: 'memo', query : {page : page, kind : this.$route.query.kind}});
+      this.$route.query.page = page;
+      //this.$router.push({name: 'memo', query : {page : page, kind : this.$route.query.kind}});
+      this.update();
+      var url = '/bbs/memo/' + this.queryString();
+      window.history.pushState({}, '', url);
     },
     update () {
       let self = this;

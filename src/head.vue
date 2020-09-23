@@ -1,12 +1,12 @@
 <template>
 <aside class="hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 dark:border-gray-500 border-r" id="nav_menu">
   <div class="py-4 text-gray-500 dark:text-gray-400">
-    <router-link class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" to="/">
+    <router-link class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200 select-none" to="/">
       {{title}}
     </router-link>
     <div class="mt-6 menu">
       <ul v-for="(row, i) in get_menu_db" :key="row.me_id">
-        <div class="flex items-center">
+        <div class="flex items-center select-none">
           <router-link class="relative px-6 py-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-teal-300 dark:hover:text-gray-200" :to="row.me_link" >
             <span class="ml-4">{{row.me_name}}</span>
             <div v-if="row.sub">
@@ -18,7 +18,7 @@
             </svg>
           </div>
         </div>
-        <ul v-if="row.sub" :data-sub="i" class="hidden transition-all ease-in-out duration-300 p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900" aria-label="submenu">
+        <ul v-if="row.sub" :data-sub="i" class="select-none hidden transition-all ease-in-out duration-300 p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900" aria-label="submenu">
           <div v-for="sub in row.sub" :key="sub.me_id">
             <router-link class="block w-full px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" :to="sub.me_link" >{{sub.me_name}}</router-link>
           </div>

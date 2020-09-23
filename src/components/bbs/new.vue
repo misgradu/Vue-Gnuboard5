@@ -38,17 +38,7 @@
 <script>
   export default {
     created () {
-      let self = this;
-      window.req_api({
-        new : true,
-        gr_id : this.$route.query.gr_id ? this.$route.query.gr_id : 0,
-        mb_id : this.$route.query.mb_id ? this.$route.query.mb_id : 0,
-        view : this.$route.query.view ? this.$route.query.view : 0,
-      }).then(function(json) {        
-        self.n = json;
-        self.list = json.list;
-        if(json.g5.title) document.title = json.g5.title;
-      });
+      this.update();
     },
     data () {
       return {
@@ -60,6 +50,19 @@
       }
     },
     methods : {
+      update () {
+        let self = this;
+        window.req_api({
+          new : true,
+          gr_id : this.$route.query.gr_id ? this.$route.query.gr_id : 0,
+          mb_id : this.$route.query.mb_id ? this.$route.query.mb_id : 0,
+          view : this.$route.query.view ? this.$route.query.view : 0,
+        }).then(function(json) {        
+          self.n = json;
+          self.list = json.list;
+          if(json.g5.title) document.title = json.g5.title;
+        });
+      },
       search () {
         let mb_id = document.querySelector('#mb_id').value;
         let gr_id = this.$refs.gr_id.$el.value;
@@ -68,29 +71,13 @@
       },
       // eslint-disable-next-line no-unused-vars
       page (page) {
-        let mb_id = this.$route.query.mb_id ? this.$route.query.mb_id : '';
-        let gr_id = this.$route.query.gr_id ? this.$route.query.gr_id : '';
-        let view = this.$route.query.view ? this.$route.query.view : '';
-        page = page ? page : 0;
-        this.$router.push({name: 'New', query : {mb_id : mb_id , view : view, gr_id : gr_id,page : page}});
+        this.$route.query.page = page ? page : '1';
+        //this.$router.push({name: 'New', query : {mb_id : mb_id , view : view, gr_id : gr_id,page : page}});
+        this.update();
+        var url = '/bbs/new/' + this.queryString();
+        window.history.pushState({}, '', url);
       },
     },
-    beforeRouteUpdate (to, from, next) {
-      let self = this;
-      window.req_api({
-        new : true,
-        mb_id : to.query.mb_id,
-        gr_id : to.query.gr_id,
-        view : to.query.view,
-        page : to.query.page ? to.query.page : 1,
-      }).then(function(json) {        
-        self.n = json;
-        self.list = json.list;
-        if(json.g5.title) document.title = json.g5.title;
-        console.log(json);
-        next();
-      });
-    }
   }
 </script>
 

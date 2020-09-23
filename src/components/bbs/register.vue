@@ -19,7 +19,7 @@
           </label>
         </div>
       </template>
-      <textarea class="dark:bg-gray-600 dark:text-gray-300 w-full h-20 p-3 text-sm" v-text="c.config.cf_stipulation"> </textarea>
+      <textarea class="dark:bg-gray-700 dark:text-gray-300 w-full h-20 p-3 text-sm" v-text="c.config.cf_stipulation"> </textarea>
     </t-card>
     <t-card class="border my-2">
       <template v-slot:header>
@@ -38,9 +38,9 @@
         ]"
       >
       </t-table>
-      <textarea class="dark:bg-gray-600 dark:text-gray-300 w-full h-20 p-3 text-sm" v-text="c.config.cf_privacy"> </textarea>
+      <textarea class="dark:bg-gray-700 dark:text-gray-300 w-full h-20 p-3 text-sm" v-text="c.config.cf_privacy"> </textarea>
     </t-card>
-    <div class="border my-2 rounded mx-auto shadow bg-white p-4 dark:bg-gray-600 dark:text-gray-300 dark:border-gray-500">
+    <div class="border my-2 rounded mx-auto shadow bg-white p-4 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-500">
       <label class="flex items-center flex justify-center w-full" @click="chkall">
         <div class="text-center flex justify-around mr-3"> 회원약관에 모두 동의 합니다</div>
         <t-checkbox name="chk_all" ref="chk_all" value="1" />
@@ -106,8 +106,8 @@
         </div>
       </t-card>
       <t-card header="기타 개인설정" class="my-4">
-        <t-input-group v-if="r.config.cf_use_signature" label="서명"> <t-textarea name="mb_signature" placeholder="서명" type="text" class="dark:bg-gray-600 dark:text-gray-300 w-full bg-gray-100 border h-20 rounded p-3"> {{r.member.mb_signature}} </t-textarea> </t-input-group>
-        <t-input-group v-if="r.config.cf_use_profile" label="자기소개"> <t-textarea name="mb_profile" placeholder="자기소개" type="text" class="dark:bg-gray-600 dark:text-gray-300 w-full bg-gray-100 border h-20 rounded p-3"> {{r.member.mb_profile}} </t-textarea> </t-input-group>
+        <t-input-group v-if="r.config.cf_use_signature" label="서명"> <t-textarea name="mb_signature" placeholder="서명" type="text" class="dark:bg-gray-700 dark:text-gray-300 w-full bg-gray-100 border h-20 rounded p-3"> {{r.member.mb_signature}} </t-textarea> </t-input-group>
+        <t-input-group v-if="r.config.cf_use_profile" label="자기소개"> <t-textarea name="mb_profile" placeholder="자기소개" type="text" class="dark:bg-gray-700 dark:text-gray-300 w-full bg-gray-100 border h-20 rounded p-3"> {{r.member.mb_profile}} </t-textarea> </t-input-group>
         <t-input-group v-if="r.config.cf_use_member_icon" label="회원아이콘" :feedback="r.config.cf_member_icon_height + '. gif, jpg, png파일만 가능하며 용량 '+ r.config.cf_member_icon_size + '바이트 이하'">
           <t-input name="mb_icon" type="file"/>
         </t-input-group>

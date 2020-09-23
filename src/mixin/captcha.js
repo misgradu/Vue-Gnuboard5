@@ -9,13 +9,13 @@ const captcha = {
   methods: {
     captcha(){
       if(this.cf_captcha == 'kcaptcha' && this.$store.state.isLogin == false || this.captcha_modify == true) {
-        console.log(this.cf_captcha_text);
+        //console.log(this.cf_captcha_text);
         var canvas = document.createElement("canvas");
         var input = document.createElement("input");
         var refresh = document.createElement("button");
         refresh.innerHTML = '<i class="fas fa-sync-alt"></i>';
         var style = "height:50px;"
-        var classStyle = "px-3";
+        var classStyle = "px-3 dark:hover:bg-gray-800 hover:bg-gray-300 border dark:border-gray-600";
         refresh.style=style;
         refresh.className=classStyle;
         refresh.type="button";
@@ -24,7 +24,7 @@ const captcha = {
         sound.className=classStyle;
         sound.type="button";
         sound.innerHTML = '<i class="fas fa-volume-up"></i>';
-        input.className = "border py-1 px-2 dark:bg-gray-500";
+        input.className = "border py-1 px-2 dark:bg-gray-900";
         input.style.width = "100px";
         input.name="captcha_key";
         input.id="captcha_key";
