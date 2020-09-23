@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="felx mx-3">
-      <button type="button" class="dark:hover:bg-gray-600 dark:bg-gray-800 dark:border-gray-400 cmt_btn hover:bg-gray-200 font-bold py-2 px-4 rounded my-3 w-full border rounded shadow bg-white" ref="cmt_toggle" @click="cmtToggle"><span class="total"><b>댓글</b> {{v.view.comment}}</span> <i class="fa fa-chevron-down"> </i></button>
+      <button type="button" class="dark:hover:bg-gray-600 dark:bg-gray-800 dark:border-gray-400 cmt_btn hover:bg-gray-200 font-bold py-2 px-4 my-3 w-full border rounded shadow bg-white" ref="cmt_toggle" @click="cmtToggle"><span class="total"><b>댓글</b> {{v.view.comment}}</span> <i class="fa fa-chevron-down"> </i></button>
     </div>
     <!-- 댓글 시작 { -->
     <p v-if="c.list.length == 0" id="bo_vc_empty" class="mx-3 border py-6 rounded bg-white px-3 text-center dark:hover:bg-gray-600 dark:bg-gray-800 dark:border-gray-400">등록된 댓글이 없습니다.</p>
     <section id="bo_vc" v-if="c.list.length > 0 && c.list" class="mx-3" ref="bo_vc">
-      <article :id="'c_'+row.wr_id" class="flex bg-white border rounded-lg mt-2" v-for="(row, i) in c.list" :key="row.wr_id" :style="'margin-left:'+row.wr_comment_reply.length * 15">
+      <article :id="'c_'+row.wr_id" class="flex bg-white dark:bg-gray-900 dark:border-gray-400 dark:text-gray-400 border rounded-lg mt-2" v-for="(row, i) in c.list" :key="row.wr_id" :style="'margin-left:'+row.wr_comment_reply.length * 15">
         <div class="flex items-start pb-4 w-full">
           <div class="w-full">
             <div class="flex items-center justify-between flex-wrap border-b pb-2 comment-header pt-4 px-4 rounded-t-lg cmt" :data-idx="i" @mouseover="cmtover(i)" @mouseout="cmtout(i)">
-              <h2 class="md:text-base text-sm font-semibold text-gray-900 -mt-1 whitespace-no-wrap cmt-title">
+              <h2 class="md:text-base text-sm font-semibold text-gray-900 -mt-1 whitespace-no-wrap cmt-title dark:text-gray-500">
                 <div class="flex" >
                   <div v-html="row.name"> </div>
                   <span class="font-normal text-sm" v-if="v.is_ip_view == 1">
@@ -21,28 +21,28 @@
               </h2>
               <ul class="flex items-center justify-end c-edit">
                 <div class="flex reply_edit cmt-hover hidden" ref="cmt_edit">
-                  <div class="flex text-gray-700 text-sm mr-1 md:mr-2 px-2 hover:bg-gray-300 rounded cursor-pointer" v-if="row.is_reply">                                          
+                  <div class="flex text-gray-700 dark:text-gray-500 text-sm mr-1 md:mr-2 px-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-gray-400 rounded cursor-pointer" v-if="row.is_reply">                                          
                     <a :href="row.c_reply_href" v-on:click.prevent.stop="comment_box(row.wr_id, 'c'); return false;">
                       <i class="fa fa-reply w-4 h-4 p-1 mr-1"> </i> <span class="hidden md:inline-block"> 답변 </span>
                     </a>
                   </div>                  
-                  <div class="flex text-gray-700 text-sm mr-1 md:mr-2 px-2 hover:bg-gray-300 rounded cursor-pointer" v-if="row.is_edit">
+                  <div class="flex text-gray-700 dark:text-gray-500 text-sm mr-1 md:mr-2 px-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-gray-400 rounded cursor-pointer" v-if="row.is_edit">
                     <a :href="row.c_edit_href" v-on:click.prevent.stop="comment_box(row.wr_id, 'cu'); return false;">
                       <i class="fa fa-edit w-4 h-4 mr-1 p-1"> </i> <span class="hidden md:inline-block"> 수정 </span>
                     </a>
                   </div>
-                  <div class="flex text-gray-700 text-sm mr-1 md:mr-2 px-2 hover:bg-gray-300 rounded cursor-pointer" v-if="row.is_del">
+                  <div class="flex text-gray-700 dark:text-gray-500 text-sm mr-1 md:mr-2 px-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-gray-400 rounded cursor-pointer" v-if="row.is_del">
                     <a :href="row.del_link" v-on:click.prevent.stop="comment_delete(row.del_link)">
                         <i class="fa fa-trash-alt w-4 h-4 mr-1 p-1"> </i> <span class="hidden md:inline-block"> 삭제 </span>
                     </a>
                   </div>
                 </div>
-                <small class="text-sm whitespace-no-wrap truncate text-gray-700 datetime" ref="cmt_title" :data-leave="'leave'+i"><i class="fa fa-clock-o" aria-hidden="true"></i> <time datetime="">{{row.datetime}}</time></small>
+                <small class="text-sm whitespace-no-wrap truncate text-gray-700 datetime dark:text-gray-500" ref="cmt_title" :data-leave="'leave'+i"><i class="fa fa-clock-o" aria-hidden="true"></i> <time datetime="">{{row.datetime}}</time></small>
               </ul>
             </div>
 	
            <!-- 댓글 출력 -->
-          <div class="text-gray-700 p-1 px-4">
+          <div class="text-gray-700 p-1 px-4 dark:text-gray-400">
               <i v-if="row.wr_option=='secret'" class="fas fa-lock mr-2"> </i>
               <span v-html="row.content"></span>
             </div>
@@ -71,7 +71,7 @@
         <h2 class="px-4 pb-2 text-gray-800 text-sm sound_only">댓글쓰기</h2>
         <span class="sound_only">내용</span>
         <strong id="char_cnt" v-if="c.comment_min || c.comment_max"><span id="char_count"></span>글자</strong>
-        <textarea id="wr_content" name="wr_content" ref="wr_content" maxlength="10000" required class="dark:bg-gray-800 dark:focus:bg-gray-700 dark:border-gray-400 bg-white rounded border-2 leading-tight appearance-none border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 mt-3 font-medium placeholder-gray-700 dark:placeholder-gray-300 focus:outline-none focus:border-gray-500" title="내용" placeholder="댓글내용을 입력해주세요"></textarea>
+        <textarea id="wr_content" name="wr_content" ref="wr_content" maxlength="10000" required class="dark:bg-gray-800 dark:focus:bg-gray-700 dark:border-gray-400 bg-white rounded border-2 leading-tight appearance-none border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 mt-3 font-medium placeholder-gray-700 dark:placeholder-gray-500 focus:outline-none focus:border-gray-500" title="내용" placeholder="댓글내용을 입력해주세요"></textarea>
         <div class="flex flex-wrap mb-6">
             <div class="bo_vc_w_info flex">
               <div v-if="c.is_guest">

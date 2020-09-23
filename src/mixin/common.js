@@ -18,7 +18,9 @@ module.exports = {
         const type = e.target.dataset.type ? e.target.dataset.type.trim() : '';
         const href = e.target.dataset.href;
         if(type == "win_memo") {
-          router.push({name : 'memo', query : get_query(href)});
+          query = get_query(href);
+          query.kind = 'memo_form';
+          router.push({name : 'memo', query : query});
         } else if(type == "win_email") {
           alert('아직 지원되지 않는 기능입니다')
         } else if(type == "win_profile") {
@@ -33,10 +35,24 @@ module.exports = {
             router.push({name : 'New', query : get_query(href)});
           }else if(e.target.innerText == '아이디로 검색' ){
             router.push({name : 'list', params : {bo_table : router.history.current.params.bo_table}, query : get_query(href)});
+          }else if(e.target.innerText == '회원정보변경' ){
+            location.href = href;
           }
         }
       })
     }
+    Vue.mixin({
+      methods : {
+        queryString () {
+          var data = this.$route.query;
+          var params = '?';
+          for (const [key, value] of Object.entries(data)) {
+            params += '&' + key + '=' + value;
+          }
+          return params;
+        },
+      }
+    }),
     Vue.sv_member();
   }
 }

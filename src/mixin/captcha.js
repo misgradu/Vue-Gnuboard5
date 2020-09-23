@@ -9,7 +9,7 @@ const captcha = {
   methods: {
     captcha(){
       if(this.cf_captcha == 'kcaptcha' && this.$store.state.isLogin == false || this.captcha_modify == true) {
-        console.log(this.cf_captcha_text);
+        //console.log(this.cf_captcha_text);
         var canvas = document.createElement("canvas");
         var input = document.createElement("input");
         var refresh = document.createElement("button");
