@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="felx mx-3">
+    <div class="flex mx-3">
       <button type="button" class="dark:hover:bg-gray-600 dark:bg-gray-900 dark:border-gray-400 cmt_btn hover:bg-gray-200 font-bold py-2 px-4 my-3 w-full border rounded shadow bg-white" ref="cmt_toggle" @click="cmtToggle"><span class="total"><b>댓글</b> {{v.view.comment}}</span> <i class="fa fa-chevron-down"> </i></button>
     </div>
     <!-- 댓글 시작 { -->
@@ -71,7 +71,11 @@
         <h2 class="px-4 pb-2 text-gray-800 text-sm sound_only">댓글쓰기</h2>
         <span class="sound_only">내용</span>
         <strong id="char_cnt" v-if="c.comment_min || c.comment_max"><span id="char_count"></span>글자</strong>
+<<<<<<< HEAD
         <textarea id="wr_content" name="wr_content" ref="wr_content" maxlength="10000" required class="dark:bg-gray-900 dark:focus:bg-gray-700 dark:border-gray-400 bg-white rounded border-2 leading-tight appearance-none border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 mt-3 font-medium placeholder-gray-700 dark:placeholder-gray-500 focus:outline-none focus:border-gray-500" title="내용" placeholder="댓글내용을 입력해주세요"></textarea>
+=======
+        <textarea id="wr_content" name="wr_content" ref="wr_content" maxlength="10000" required class="dark:bg-gray-800 dark:focus:bg-gray-700 dark:border-gray-400 bg-white rounded border-2 leading-tight appearance-none border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 mt-3 font-medium placeholder-gray-700 dark:placeholder-gray-500 focus:outline-none focus:border-gray-500" title="내용" placeholder="댓글내용을 입력해주세요"></textarea>
+>>>>>>> a3a770dcc12dfda4496ef5212619c7c3382ae086
         <div class="flex flex-wrap mb-6">
             <div class="bo_vc_w_info flex">
               <div v-if="c.is_guest">
