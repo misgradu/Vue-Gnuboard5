@@ -7,6 +7,8 @@ import { router } from "./router"
 import VueTailwind from 'vue-tailwind'
 import VueAppend from './mixin/vue-append'
 import Common from './mixin/common'
+import VueMasonry from 'vue-masonry-css'
+Vue.use(VueMasonry);
 Vue.use(VueAppend)
 Vue.use(Vuex);
 Vue.use(Common, router);

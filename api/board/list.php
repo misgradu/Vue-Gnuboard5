@@ -1,5 +1,6 @@
 <?php
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
+@include_once(G5_LIB_PATH.'/thumbnail.lib.php');
 // 분류 사용 여부
 $is_category = false;
 $category_option = '';
@@ -194,7 +195,17 @@ if($page_rows > 0) {
         $list_num = $total_count - ($page - 1) * $list_page_rows - $notice_count;
         $list[$i]['num'] = $list_num - $k;
         $list[$i]['href'] = str_replace(G5_URL, '', short_url_clean($list[$i]['href']));
-
+        // 이미지 썸네일
+        $thumb = get_list_thumbnail($bo_table, $list[$i]['wr_id'], $board['bo_gallery_width'], $board['bo_gallery_height'], false, true);
+        if($thumb['src']) {
+            $img_content = '<img src="'.$thumb['src'].'" alt="'.$thumb['alt'].'" width="'.$thumb_width.'" height="'.$thumb_height.'">';
+            $list[$i]['img_thumbnail'] = '<a href="'.$list[$i]['href'].'" class="lt_img">'.$img_content.'</a>';
+        } else {
+            $img_content = '<img src="'. G5_IMG_URL.'/no_img.png'.'" alt="'.$thumb['alt'].'" width="'.$thumb_width.'" height="'.$thumb_height.'" class="no_img">';
+        }
+        $list[$i]['thumbnail'] = $img_content;
+        unset($img_content);
+        unset($thumb);
         $i++;
         $k++;
     }
