@@ -197,11 +197,14 @@ if($page_rows > 0) {
         $list[$i]['href'] = str_replace(G5_URL, '', short_url_clean($list[$i]['href']));
         // 이미지 썸네일
         $thumb = get_list_thumbnail($bo_table, $list[$i]['wr_id'], $board['bo_gallery_width'], $board['bo_gallery_height'], false, true);
-        if($thumb['src']) {
-            $img_content = '<img src="'.$thumb['src'].'" alt="'.$thumb['alt'].'" width="'.$thumb_width.'" height="'.$thumb_height.'">';
-            $list[$i]['img_thumbnail'] = '<a href="'.$list[$i]['href'].'" class="lt_img">'.$img_content.'</a>';
+        if($thumb['ori']) {
+            $img_content['src'] = $thumb['ori'];
+            $img_content['width'] = getimagesize(str_replace(G5_URL, G5_PATH, $thumb['ori']))[0];
+            $img_content['height'] = getimagesize(str_replace(G5_URL, G5_PATH, $thumb['ori']))[1];
         } else {
-            $img_content = '<img src="'. G5_IMG_URL.'/no_img.png'.'" alt="'.$thumb['alt'].'" width="'.$thumb_width.'" height="'.$thumb_height.'" class="no_img">';
+            $img_content['src'] = G5_IMG_URL.'/no_img.png';
+            $img_content['width'] = getimagesize(str_replace(G5_URL, G5_PATH, G5_IMG_URL.'/no_img.png'))[0];
+            $img_content['height'] = getimagesize(str_replace(G5_URL, G5_PATH, G5_IMG_URL.'/no_img.png'))[1];
         }
         $list[$i]['thumbnail'] = $img_content;
         unset($img_content);

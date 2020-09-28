@@ -1,30 +1,23 @@
 
 <template>
   <div class="mx-3">
-  <masonry
-    :cols="{default: 3, 769: 2, 400: 1}"
-    :gutter="{default: '30px', 700: '15px'}"
-  >
-    <div v-for="(row, i) in list" :key="i" class="bg-white dakr:bg-gray-900 border shadow-lg">
-      <!--<header class="p-3 border-b dark:boder-gray-400"> {{row.subject}} </header>-->
-      <router-link :to="row.href" class="max-w-xs relative">
-        <div v-if="row.thumbnail" v-html="row.thumbnail" class="thumb w-full h-auto max-w-xs"> </div>
-      </router-link>
-      <!--
-      <div v-if="row.thumbnail" v-html="row.thumbnail">
-      </div>
-      <div v-else class="flex select-none items-center justify-center dark:text-gray-400 h-16">
-        {{row.subject}}
-      </div>
-      <footer class="p-3">
-        <div class="text-xs flex justify-between whitespace-no-wrap"> 
-          <div> <i class="far fa-eye"></i> {{row.wr_hit}} </div>
-          <div> <i class="far fa-clock"></i> {{row.wr_datetime}} </div>
+    <div v-masonry transition-duration="1s" item-selector=".item" class="masonry-container w-full mb-16 ">
+      <div
+      v-for="(row, i) in list" :key="i" 
+      v-masonry-tile
+      class="item bg-white dark:bg-gray-900 border-t border-r border-l mx-3 relative block my-3 dark:border-gray-400" style="max-height:30rem;max-width:200px;">
+      <router-link :to="row.href">
+        <div class="p-3 border-b dark:boder-gray-400"> {{row.subject}} </div>
+        <img class="text-center w-full text-center flex justify-around bg-white dark:bg-gary-900 " :src="row.thumbnail.src" :width="row.thumbnail.width+'px'" :height="row.thumbnail.height+'px'">        
+        <div class="p-3 text-gray-600 bg-white dark:bg-gray-900 border-b border-t">
+          <div class="text-xs flex justify-between whitespace-no-wrap"> 
+            <div class="pr-3"> <i class="far fa-eye"></i> {{row.wr_hit}} </div>
+            <div class="pr-2"> <i class="far fa-clock"></i> {{row.wr_datetime}} </div>
+          </div>
         </div>
-      </footer>
-      -->
+      </router-link>
+      </div>
     </div>
-  </masonry>
   </div>
 </template>
 
@@ -32,6 +25,11 @@
 export default {
   name: 'gallery',
   props : ['list', 'g'],
+  data () {
+    return {
+      maxWidth : window.innerWidth + (32 * 5)
+    }
+  }
 }
 </script>
 
