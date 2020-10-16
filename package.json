@@ -15,6 +15,7 @@
     "tailwindcss": "^1.8.10",
     "tailwindcss-multi-theme": "^1.0.3",
     "vue": "^2.6.11",
+    "vue-masonry": "^0.11.8",
     "vue-tailwind": "^1.2.8",
     "vuex": "^3.5.1"
   },
@@ -25,7 +26,6 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-masonry-css": "^1.0.3",
     "vue-router": "^3.4.3",
     "vue-template-compiler": "^2.6.11"
   },
