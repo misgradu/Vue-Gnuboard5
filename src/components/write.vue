@@ -88,7 +88,8 @@
         <label :for="'bf_file_'+i" class="appearance-none py-3 px-4"><i class="fa fa-folder-open" aria-hidden="true"></i><span class="sound_only"> 파일 #{{i}}</span></label>
         <input type="file" name="bf_file[]" :id="'bf_file_'+i" :title="'파일첨부'+i+': 용량 '+v.upload_max_filesize+' 이하만 업로드 가능'" class="dark:border-gray-500 dark:bg-gray-600 dark:text-gray-400 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
         <input v-if="v.is_file_content" type="text" name="bf_content[]" title="파일 설명을 입력해주세요." class="dark:border-gray-500 dark:bg-gray-600 dark:text-gray-400 border-l appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" size="50" placeholder="파일 설명을 입력해주세요.">
-        <span class="file_del absolute top-0 right-0 mr-5 py-3 text-xs flex items-center h-full " v-if="v.w=='u'">
+        <span class="file_del absolute top-0 right-0 mr-5 py-3 text-xs flex items-center h-full " v-if="v.w=='u' && v.file[i]">
+          <span class="mr-1"> {{v.file[i].source}} ({{v.file[i].size}})</span>
           <input type="checkbox" :id="'bf_file_del'+i" :name="'bf_file_del['+i+']'" value="1"> <label :for="'bf_file_del'+i">  파일 삭제</label>
         </span>
       </div>
@@ -184,7 +185,7 @@ export default {
     postData.bo_table = this.$route.params.bo_table;
     postData.parameter = JSON.stringify(this.$route.params);
     postData.wr_password = this.$route.params.wr_password;
-    console.log(postData);
+    //console.log(postData);
     window.req_api(postData).then(function(json){
       if(json.msg){
         alert(json.msg);

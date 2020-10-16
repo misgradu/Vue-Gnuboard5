@@ -15,7 +15,7 @@
               <p class="text-bold text-sm"> {{row.po_content}} </p>
               <p class="text-sm text-gray-500"> <i class="far fa-clock"></i> {{row.po_datetime}} </p>
             </div>
-            <div class="text-blue-500 font-bold"> {{row.po_point}} </div>
+            <div class="text-blue-500 font-bold"> {{row.po_point | point_format}} </div>
           </div>
         </div>
         <div class="p-3 border-2 border-gray-500 bg-gray-300 rounded flex justify-between dark:bg-gray-700 mt-4"> 

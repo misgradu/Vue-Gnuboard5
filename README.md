@@ -5,6 +5,12 @@
 
 ## 설치
 
+
+해당 소스를 빌드하는 컴퓨터(시스템)에 node 및 Vue Cli의 최신버전이 설치 되어있어야 합니다.
+
+개발에 사용된 Vue 버전은 2.6.11입니다.
+Vue3은 현재 지원하지 않으며 추후 정식버전 출시 후 Vue 3 버전으로 업데이트 될 예정입니다.
+
 ```
 git pull https://github.com/ohah/vue-gnuboard5
 

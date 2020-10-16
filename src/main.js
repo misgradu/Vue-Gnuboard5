@@ -25,6 +25,12 @@ Vue.filter("mb_nick", val => {
 Vue.filter("number_format", val =>{
   return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 });
+Vue.filter("point_format", val =>{
+  if(parseInt(val) > 0)
+    return "+ " + String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  else
+    return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+});
 Vue.filter('round', (value, decimals) => {
   if (!value) value = 0;
   if (!decimals) decimals = 0;
